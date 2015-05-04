@@ -32,8 +32,8 @@ use Str, Validator, DateTime, Exception;
 class Follow extends BaseModel {
 
 	use SoftDeletes;
-	use \ThunderID\Calendar\Models\Relations\BelongsTo\HasCalendarTrait;
-	use \ThunderID\Calendar\Models\Relations\BelongsTo\HasChartTrait;
+	use \ThunderID\Schedule\Models\Relations\BelongsTo\HasCalendarTrait;
+	use \ThunderID\Schedule\Models\Relations\BelongsTo\HasChartTrait;
 
 	public 		$timestamps 		= true;
 

@@ -30,7 +30,7 @@ use Str, Validator, DateTime, Exception;
 class PersonSchedule extends BaseModel {
 
 	use SoftDeletes;
-	use \ThunderID\Calendar\Models\Relations\BelongsTo\HasPersonTrait;
+	use \ThunderID\Schedule\Models\Relations\BelongsTo\HasPersonTrait;
 
 	public 		$timestamps 		= true;
 

@@ -39,10 +39,10 @@ use Str, Validator, DateTime, Exception;
 class Calendar extends BaseModel {
 
 	use SoftDeletes;
-	use \ThunderID\Calendar\Models\Relations\BelongsTo\HasOrganisationTrait;
-	use \ThunderID\Calendar\Models\Relations\HasMany\HasSchedulesTrait;
-	use \ThunderID\Calendar\Models\Relations\BelongsToMany\HasChartsTrait;
-	use \ThunderID\Calendar\Models\Relations\BelongsToMany\HasPersonsTrait;
+	use \ThunderID\Schedule\Models\Relations\BelongsTo\HasOrganisationTrait;
+	use \ThunderID\Schedule\Models\Relations\HasMany\HasSchedulesTrait;
+	use \ThunderID\Schedule\Models\Relations\BelongsToMany\HasChartsTrait;
+	use \ThunderID\Schedule\Models\Relations\BelongsToMany\HasPersonsTrait;
 
 	public 		$timestamps 		= true;
 
