@@ -1,4 +1,4 @@
-<?php namespace ThunderID\Schedule\Models\Relations\BelongsTo;
+<?php namespace ThunderID\Schedule\Models\Relations\HasMany;
 
 trait HasSchedulesTrait {
 
