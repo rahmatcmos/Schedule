@@ -21,7 +21,7 @@ class PersonScheduleTableSeeder extends Seeder
 		{
 			foreach(range(1, 20) as $index)
 			{
-				$rand 							= rand(1,$total_persons);
+				$rand 							= rand(0,6);
 				$data 							= new PersonSchedule;
 				$data->fill([
 					'on'						=> date('Y-m-d'),

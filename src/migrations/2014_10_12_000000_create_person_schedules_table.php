@@ -24,7 +24,7 @@ class CreatePersonSchedulesTable extends Migration {
 			$table->timestamps();
 			$table->softDeletes();
 			
-			$table->index(['deleted_at', 'date']);
+			$table->index(['deleted_at', 'on']);
 		});
 	}
 
