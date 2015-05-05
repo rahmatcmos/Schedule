@@ -26,6 +26,7 @@ class PersonScheduleTableSeeder extends Seeder
 				$data->fill([
 					'on'						=> date('Y-m-d'),
 					'name'						=> $schedule[$rand],
+					'status'					=> 'Shift',
 					'start'						=> $start[$rand],
 					'end'						=> $end[$rand],
 				]);

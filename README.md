@@ -201,3 +201,42 @@ seed (run in windows)
 	withattributes					: Search with relationship, parameter => array of relationship (ex : ['chart', 'person'], if relationship is belongsTo then return must be single object, if hasMany or belongsToMany then return must be plural object)
 
 /* ----------------------------------------------------------------------
+
+## Table PersonSchedule
+
+/* ----------------------------------------------------------------------
+ * Document Model:
+ * 	ID 								: Auto Increment, Integer, PK
+ * 	person_id 						: Foreign Key From Person, Integer, Required
+ * 	name 		 					: Required max 255
+ * 	status 		 					: Required max 255
+ * 	on 		 						: Required, Date
+ * 	start 	 						: Required, Time
+ * 	end		 						: Required, Time
+ *	created_at						: Timestamp
+ * 	updated_at						: Timestamp
+ * 	deleted_at						: Timestamp
+ * 
+/* ----------------------------------------------------------------------
+ * Document Relationship :
+ * 	//this package
+ 	1 Relationship belongsTo 
+	{
+		Person
+	}
+
+/* ----------------------------------------------------------------------
+ * Document Fillable :
+ * 	name
+ 	status
+ 	on
+ 	start
+ 	end
+
+/* ----------------------------------------------------------------------
+ * Document Searchable :
+ * 	id 								: Search by id, parameter => string, id
+	personid 						: Search by person_id, parameter => string, person_id
+	withattributes					: Search with relationship, parameter => array of relationship (ex : ['chart', 'person'], if relationship is belongsTo then return must be single object, if hasMany or belongsToMany then return must be plural object)
+
+/* ----------------------------------------------------------------------

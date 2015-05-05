@@ -7,10 +7,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * 	ID 								: Auto Increment, Integer, PK
  * 	person_id 						: Foreign Key From Person, Integer, Required
  * 	name 		 					: Required max 255
+ * 	status 		 					: Required max 255
  * 	on 		 						: Required, Date
  * 	start 	 						: Required, Time
  * 	end		 						: Required, Time
- * 	is_furlough		 				: Boolean
  *	created_at						: Timestamp
  * 	updated_at						: Timestamp
  * 	deleted_at						: Timestamp
@@ -37,18 +37,18 @@ class PersonSchedule extends BaseModel {
 	protected 	$table 				= 'person_schedules';
 	protected 	$fillable			= [
 										'name' 							,
+										'status' 						,
 										'on' 							,
 										'start' 						,
 										'end' 							,
-										'is_furlough' 					,
 									];
 
 	protected 	$rules				= [
 										'name'							=> 'required|max:255',
+										'status'						=> 'required|max:255',
 										'on'							=> 'required|date_format:"Y-m-d"',
 										'start'							=> 'required|date_format:"H:i:s"',
 										'end'							=> 'required|date_format:"H:i:s"',
-										'is_furlough' 					=> 'bool',
 									];
 	public $searchable 				= 	[
 											'id' 						=> 'ID', 
