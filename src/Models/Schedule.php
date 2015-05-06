@@ -122,7 +122,7 @@ class Schedule extends BaseModel {
 				return $query->where('on', 'like', date('Y-m').'%');
 			}
 		}
-		return $query->where('calendar_id', $variable);
+		return $query->where('on', 'like', strtotime('Y-m', $variable).'%');
 	}
 
 	public function scopeWithAttributes($query, $variable)
