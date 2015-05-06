@@ -102,4 +102,15 @@ class PersonSchedule extends BaseModel {
 	{
 		return $query->where('person_id', $variable);
 	}
+
+	
+	public function scopeWithAttributes($query, $variable)
+	{
+		if(!is_array($variable))
+		{
+			$variable 			= [$variable];
+		}
+
+		return $query->with($variable);
+	}
 }

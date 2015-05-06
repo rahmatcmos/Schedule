@@ -103,4 +103,14 @@ class Follow extends BaseModel {
 	{
 		return $query->where('chart_id', $variable);
 	}
+
+	public function scopeWithAttributes($query, $variable)
+	{
+		if(!is_array($variable))
+		{
+			$variable 			= [$variable];
+		}
+
+		return $query->with($variable);
+	}
 }
