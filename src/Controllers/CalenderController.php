@@ -58,9 +58,9 @@ class CalenderController extends Controller {
 			return $content;
 		}
 
-		if(isset($schedule['templates']))
+		if(isset($attributes['schedules']))
 		{
-			foreach ($schedule['templates'] as $key => $value) 
+			foreach ($attributes['schedules'] as $key => $value) 
 			{
 				$schedule					= $value;
 				if(isset($value['id']) && $value['id']!='' && !is_null($value['id']))
