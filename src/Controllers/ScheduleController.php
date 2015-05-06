@@ -43,12 +43,12 @@ class ScheduleController extends Controller {
 	 */
 	public function store($id = null, $attributes = null)
 	{
-		$id 									= $attributes['document']['id'];
+		$id 									= $attributes['schedule']['id'];
 		$org_id 								= $attributes['organisation']['id'];
 
 		DB::beginTransaction();
 		
-		$content 								= $this->dispatch(new Saving(new Schedule, $attributes['document'], $id, new Organisation, $org_id));
+		$content 								= $this->dispatch(new Saving(new Schedule, $attributes['schedule'], $id, new Organisation, $org_id));
 
 		$is_success 							= json_decode($content);
 		if(!$is_success->meta->success)

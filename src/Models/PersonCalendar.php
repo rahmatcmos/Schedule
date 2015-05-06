@@ -40,12 +40,12 @@ class PersonCalendar extends BaseModel {
 
 	protected 	$table 				= 'persons_calendars';
 	protected 	$fillable			= [
-										'calendar_id' 					,
+										'person_id' 					,
 										'start' 						,
 									];
 
 	protected 	$rules				= [
-										'calendar_id'					=> 'required|exists:calendars,id',
+										'person_id'						=> 'required|exists:persons,id',
 										'start'							=> 'required|date_format:"Y-m-d H:i:s"',
 									];
 	public $searchable 				= 	[

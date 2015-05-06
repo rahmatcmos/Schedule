@@ -4,6 +4,7 @@ use \App\Http\Controllers\Controller;
 use \ThunderID\Schedule\Models\Calendar;
 use \ThunderID\Schedule\Models\Schedule;
 use \ThunderID\Schedule\Models\PersonCalendar;
+use \ThunderID\Schedule\Models\Follow;
 use \ThunderID\Organisation\Models\Organisation;
 use \ThunderID\Commoquent\Getting;
 use \ThunderID\Commoquent\Saving;
@@ -82,6 +83,53 @@ class CalenderController extends Controller {
 			}
 		}
 
+		if(isset($attributes['persons']))
+		{
+			foreach ($attributes['persons'] as $key => $value) 
+			{
+				$personcalendar				= $value;
+				if(isset($value['id']) && $value['id']!='' && !is_null($value['id']))
+				{
+					$personcalendar['id']	= $value['id'];
+				}
+				else
+				{
+					$personcalendar['id']	= null;
+				}
+
+				$saved_person 				= $this->dispatch(new Saving(new PersonCalendar, $personcalendar, $personcalendar['id'], new Calendar, $is_success->data->id));
+				$is_success_2 				= json_decode($saved_person);
+				if(!$is_success_2->meta->success)
+				{
+					DB::rollback();
+					return $saved_person;
+				}
+			}
+		}
+
+		if(isset($attributes['charts']))
+		{
+			foreach ($attributes['charts'] as $key => $value) 
+			{
+				$follow				= $value;
+				if(isset($value['id']) && $value['id']!='' && !is_null($value['id']))
+				{
+					$follow['id']	= $value['id'];
+				}
+				else
+				{
+					$follow['id']	= null;
+				}
+
+				$saved_chart 				= $this->dispatch(new Saving(new Follow, $follow, $follow['id'], new Calendar, $is_success->data->id));
+				$is_success_2 				= json_decode($saved_chart);
+				if(!$is_success_2->meta->success)
+				{
+					DB::rollback();
+					return $saved_chart;
+				}
+			}
+		}
 		DB::commit();
 
 		return $content;

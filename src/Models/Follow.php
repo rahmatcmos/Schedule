@@ -39,11 +39,11 @@ class Follow extends BaseModel {
 
 	protected 	$table 				= 'follows';
 	protected 	$fillable			= [
-										'calendar_id' 					,
+										'chart_id' 						,
 									];
 
 	protected 	$rules				= [
-										'calendar_id'					=> 'required|exists:calendars,id',
+										'chart_id'						=> 'required|exists:charts,id',
 									];
 	public $searchable 				= 	[
 											'id' 						=> 'ID', 
