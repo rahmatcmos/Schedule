@@ -20,4 +20,13 @@ trait HasCalendarTrait {
 		return $this->belongsTo('ThunderID\Schedule\Models\Calendar');
 	}
 
+	public function scopeChartName($query, $variable)
+	{
+		return $query->WhereHas('calendar.charts', function($q)use($variable){$q->where('name', $variable);});
+	}
+
+	public function scopeBranchName($query, $variable)
+	{
+		return $query->WhereHas('calendar.charts.branch', function($q)use($variable){$q->where('name', $variable);});
+	}
 }

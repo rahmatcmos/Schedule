@@ -57,9 +57,11 @@ class Calendar extends BaseModel {
 	public $searchable 				= 	[
 											'id' 						=> 'ID', 
 											'organisationid' 			=> 'OrganisationID', 
+											'chartname' 				=> 'ChartName', 
+											'branchname' 				=> 'BranchName', 
 											'withattributes' 			=> 'WithAttributes'
 										];
-	public $sortable 				= ['created_at'];
+	public $sortable 				= ['created_at', 'name'];
 
 	/* ---------------------------------------------------------------------------- CONSTRUCT ----------------------------------------------------------------------------*/
 	/**
@@ -105,5 +107,15 @@ class Calendar extends BaseModel {
 	public function scopeOrganisationID($query, $variable)
 	{
 		return $query->where('organisation_id', $variable);
+	}
+
+	public function scopeWithAttributes($query, $variable)
+	{
+		if(!is_array($variable))
+		{
+			$variable 			= [$variable];
+		}
+
+		return $query->with($variable);
 	}
 }

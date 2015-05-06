@@ -17,7 +17,7 @@ class CalendarTableSeeder extends Seeder
 		$faker 										= Factory::create();
 		$total_persons  							= Person::count();
 		$total_positions 	 						= Chart::count();
-		$total_branches 	 							= Branch::get();
+		$total_branches 	 						= Branch::get();
 		$calendar 									= ['wib', 'wita', 'wit'];
 		try
 		{
@@ -27,6 +27,7 @@ class CalendarTableSeeder extends Seeder
 				{
 					$data 								= new Calendar;
 					$data->fill([
+						'organisation_id'				=> 1,
 						'name'							=> $calendar[rand(0,2)],
 					]);
 

@@ -1,6 +1,7 @@
 <?php namespace ThunderID\Schedule\Models;
 
 use Illuminate\Database\Eloquent\SoftDeletes;
+use DB;
 
 /* ----------------------------------------------------------------------
  * Document Model:
@@ -50,9 +51,12 @@ class Schedule extends BaseModel {
 	public $searchable 				= 	[
 											'id' 						=> 'ID', 
 											'calendarid' 				=> 'CalendarID', 
+											'ondate' 					=> 'OnDate', 
+											'chartname' 				=> 'ChartName', 
+											'branchname' 				=> 'BranchName', 
 											'withattributes' 			=> 'WithAttributes'
 										];
-	public $sortable 				= ['created_at'];
+	public $sortable 				= ['created_at', 'name'];
 
 	/* ---------------------------------------------------------------------------- CONSTRUCT ----------------------------------------------------------------------------*/
 	/**
@@ -98,5 +102,36 @@ class Schedule extends BaseModel {
 	public function scopeCalendarID($query, $variable)
 	{
 		return $query->where('calendar_id', $variable);
+	}
+
+	public function scopeOnDate($query, $variable)
+	{
+		if(is_array($variable))
+		{
+			if(!is_null($variable[1]))
+			{
+				return $query->where('on', '<=', strtotime('Y-m-d', $variable[1]))
+							 ->where('on', '>=', strtotime('Y-m-d', $variable[0]));
+			}
+			elseif(!is_null($variable[0]))
+			{
+				return $query->where('on', 'like', strtotime('Y-m', $variable[0]).'%');
+			}
+			else
+			{
+				return $query->where('on', 'like', date('Y-m').'%');
+			}
+		}
+		return $query->where('calendar_id', $variable);
+	}
+
+	public function scopeWithAttributes($query, $variable)
+	{
+		if(!is_array($variable))
+		{
+			$variable 			= [$variable];
+		}
+
+		return $query->with($variable);
 	}
 }
