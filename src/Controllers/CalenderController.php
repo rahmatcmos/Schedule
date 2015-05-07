@@ -72,8 +72,9 @@ class CalenderController extends Controller {
 					$schedule['id']			= null;
 				}
 
-				$saved_schedule 			= $this->dispatch(new Saving(new Schedule, $template, $template['id'], new Calendar, $is_success->data->id));
+				$saved_schedule 			= $this->dispatch(new Saving(new Schedule, $schedule, $schedule['id'], new Calendar, $is_success->data->id));
 				$is_success_2 				= json_decode($saved_schedule);
+
 				if(!$is_success_2->meta->success)
 				{
 					DB::rollback();

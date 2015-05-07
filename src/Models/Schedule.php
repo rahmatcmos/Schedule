@@ -110,19 +110,19 @@ class Schedule extends BaseModel {
 		{
 			if(!is_null($variable[1]))
 			{
-				return $query->where('on', '<=', strtotime('Y-m-d', $variable[1]))
-							 ->where('on', '>=', strtotime('Y-m-d', $variable[0]));
+				return $query->where('on', '<=', date('Y-m-d', strtotime($variable[1])))
+							 ->where('on', '>=', date('Y-m-d', strtotime($variable[0])));
 			}
 			elseif(!is_null($variable[0]))
 			{
-				return $query->where('on', 'like', strtotime('Y-m', $variable[0]).'%');
+				return $query->where('on', 'like', date('Y-m', strtotime($variable[0])).'%');
 			}
 			else
 			{
 				return $query->where('on', 'like', date('Y-m').'%');
 			}
 		}
-		return $query->where('on', 'like', strtotime('Y-m', $variable).'%');
+		return $query->where('on', 'like', date('Y-m', strtotime($variable)).'%');
 	}
 
 	public function scopeWithAttributes($query, $variable)
