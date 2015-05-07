@@ -45,9 +45,8 @@ class CalenderController extends Controller {
 	 */
 	public function store($id = null, $attributes = null)
 	{
-		$id 									= $attributes['calendar']['id'];
 		$org_id 								= $attributes['organisation']['id'];
-
+		
 		DB::beginTransaction();
 		
 		$content 								= $this->dispatch(new Saving(new Calendar, $attributes['calendar'], $id, new Organisation, $org_id));
@@ -143,7 +142,7 @@ class CalenderController extends Controller {
 	 */
 	public function show($org_id, $id)
 	{
-		$content 						= $this->dispatch(new Getting(new Calendar, ['ID' => $id, 'organisationid' => $org_id], ['created_at' => 'asc'] ,1, 1));
+		$content 						= $this->dispatch(new Getting(new Calendar, ['ID' => $id, 'organisationid' => $org_id, 'withattributes' => ['charts', 'charts.branch']], ['created_at' => 'asc'] ,1, 1));
 		
 		return $content;
 	}

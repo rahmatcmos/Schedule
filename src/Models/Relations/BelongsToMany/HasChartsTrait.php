@@ -21,9 +21,9 @@ trait HasChartsTrait {
 		return $this->belongsToMany('ThunderID\Organisation\Models\Chart', 'follows', 'calendar_id', 'chart_id');
 	}
 
-	public function scopeChartName($query, $variable)
+	public function scopeChartTag($query, $variable)
 	{
-		return $query->WhereHas('charts', function($q)use($variable){$q->where('name', $variable);});
+		return $query->WhereHas('charts', function($q)use($variable){$q->where('tag', $variable);});
 	}
 
 	public function scopeBranchName($query, $variable)

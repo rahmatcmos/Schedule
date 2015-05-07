@@ -57,7 +57,8 @@ class Calendar extends BaseModel {
 	public $searchable 				= 	[
 											'id' 						=> 'ID', 
 											'organisationid' 			=> 'OrganisationID', 
-											'chartname' 				=> 'ChartName', 
+											'name' 						=> 'Name', 
+											'charttag' 					=> 'ChartTag', 
 											'branchname' 				=> 'BranchName', 
 											'withattributes' 			=> 'WithAttributes'
 										];
@@ -107,6 +108,11 @@ class Calendar extends BaseModel {
 	public function scopeOrganisationID($query, $variable)
 	{
 		return $query->where('organisation_id', $variable);
+	}
+
+	public function scopeName($query, $variable)
+	{
+		return $query->where('name', 'like', '%'.$variable.'%');
 	}
 
 	public function scopeWithAttributes($query, $variable)

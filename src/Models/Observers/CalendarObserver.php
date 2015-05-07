@@ -34,11 +34,11 @@ class CalendarObserver
 		}
 	}
 
-	public function updating($model)
+	public function saved($model)
 	{
-		if($model->getDirty('organisation_id') != $model['attributes']['organisation_id'])
+		if(isset($model['attributes']['organisation_id']) && $model->getDirty('organisation_id') != $model['attributes']['organisation_id'])
 		{
-			$model['errors'] 	= 'Organisasi tidak valid';
+			$model['errors'] 	= ['Organisasi tidak valid'];
 
 			return false;
 		}
