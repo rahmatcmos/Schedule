@@ -143,7 +143,7 @@ class CalenderController extends Controller {
 	 */
 	public function show($org_id, $id)
 	{
-		$content 						= $this->dispatch(new Getting(new Calendar, ['ID' => $id, 'organisationid' => $org_id, 'withattributes' => ['charts', 'charts.branch']], ['created_at' => 'asc'] ,1, 1));
+		$content 						= $this->dispatch(new Getting(new Calendar, ['ID' => $id, 'organisationid' => $org_id, 'withattributes' => ['charts', 'charts.branch', 'schedules']], ['created_at' => 'asc'] ,1, 1));
 		
 		return $content;
 	}
