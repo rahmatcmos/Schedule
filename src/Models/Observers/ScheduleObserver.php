@@ -16,17 +16,7 @@ class ScheduleObserver
 {
 	public function creating($model)
 	{
-		$schedule 			= new Schedule;
-		$data 				= $schedule->ondate([$model['attributes']['on'], $model['attributes']['on']])->first();
-
-		if(count($data))
-		{
-			$errors 		= new MessageBag;
-			$errors->add('ondate', 'Tidak dapat menyimpan dua jadwal di hari yang sama. Silahkan edit jadwal sebelumnya tambahkan jadwal khusus pada orang yang bersangkutan.');
-			$model['errors'] = $errors;
-
-			return false;
-		}
+		//
 	}
 
 	public function saving($model)
@@ -35,6 +25,21 @@ class ScheduleObserver
 
 		if ($validator->passes())
 		{
+			if(isset($model['attributes']['calendar_id']))
+			{
+				$schedule 			= new Schedule;
+				$data 				= $schedule->ondate([$model['attributes']['on'], $model['attributes']['on']])->calendarid($model['attributes']['calendar_id'])->first();
+
+				if(count($data))
+				{
+					$errors 		= new MessageBag;
+					$errors->add('ondate', 'Tidak dapat menyimpan dua jadwal di hari yang sama. Silahkan edit jadwal sebelumnya tambahkan jadwal khusus pada orang yang bersangkutan.');
+					$model['errors'] = $errors;
+
+					return false;
+				}
+			}
+
 			return true;
 		}
 		else

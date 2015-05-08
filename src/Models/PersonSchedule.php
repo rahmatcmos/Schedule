@@ -53,6 +53,8 @@ class PersonSchedule extends BaseModel {
 	public $searchable 				= 	[
 											'id' 						=> 'ID', 
 											'personid' 					=> 'PersonID', 
+											'name' 						=> 'Name', 
+											'ondate' 					=> 'OnDate', 
 											'withattributes' 			=> 'WithAttributes'
 										];
 	public $sortable 				= ['created_at'];
@@ -103,6 +105,31 @@ class PersonSchedule extends BaseModel {
 		return $query->where('person_id', $variable);
 	}
 
+	public function scopeName($query, $variable)
+	{
+		return $query->where('name', 'like', '%'.$variable.'%');
+	}
+
+	public function scopeOnDate($query, $variable)
+	{
+		if(is_array($variable))
+		{
+			if(!is_null($variable[1]))
+			{
+				return $query->where('on', '<=', date('Y-m-d', strtotime($variable[1])))
+							 ->where('on', '>=', date('Y-m-d', strtotime($variable[0])));
+			}
+			elseif(!is_null($variable[0]))
+			{
+				return $query->where('on', 'like', date('Y-m', strtotime($variable[0])).'%');
+			}
+			else
+			{
+				return $query->where('on', 'like', date('Y-m').'%');
+			}
+		}
+		return $query->where('on', 'like', date('Y-m', strtotime($variable)).'%');
+	}
 	
 	public function scopeWithAttributes($query, $variable)
 	{

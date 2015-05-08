@@ -51,6 +51,7 @@ class Schedule extends BaseModel {
 	public $searchable 				= 	[
 											'id' 						=> 'ID', 
 											'calendarid' 				=> 'CalendarID', 
+											'name' 						=> 'Name', 
 											'ondate' 					=> 'OnDate', 
 											'chartname' 				=> 'ChartName', 
 											'branchname' 				=> 'BranchName', 
@@ -102,6 +103,11 @@ class Schedule extends BaseModel {
 	public function scopeCalendarID($query, $variable)
 	{
 		return $query->where('calendar_id', $variable);
+	}
+
+	public function scopeName($query, $variable)
+	{
+		return $query->where('name', 'like', '%'.$variable.'%');
 	}
 
 	public function scopeOnDate($query, $variable)
