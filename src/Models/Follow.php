@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * 	ID 								: Auto Increment, Integer, PK
  * 	chart_id 						: Foreign Key From Chart, Integer, Required
  * 	calendar_id 					: Foreign Key From Calendar, Integer, Required
+ * 	start 							: Required, Datetime
  *	created_at						: Timestamp
  * 	updated_at						: Timestamp
  * 	deleted_at						: Timestamp
@@ -40,10 +41,12 @@ class Follow extends BaseModel {
 	protected 	$table 				= 'follows';
 	protected 	$fillable			= [
 										'chart_id' 						,
+										'start' 						,
 									];
 
 	protected 	$rules				= [
 										'chart_id'						=> 'required|exists:charts,id',
+										'start'							=> 'required|date_format:"Y-m-d H:i:s"',
 									];
 	public $searchable 				= 	[
 											'id' 						=> 'ID', 

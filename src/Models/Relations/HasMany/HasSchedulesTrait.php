@@ -17,7 +17,6 @@ trait HasSchedulesTrait {
 	/* ------------------------------------------------------------------- RELATIONSHIP IN ORGANISATION PACKAGE -------------------------------------------------------------------*/
 	public function Schedules()
 	{
-		return $this->belongsTo('ThunderID\Schedule\Models\Schedule');
+		return $this->hasMany('ThunderID\Schedule\Models\Schedule');
 	}
-
 }

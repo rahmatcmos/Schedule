@@ -17,6 +17,7 @@ class CreateFollowsTable extends Migration {
 			$table->increments('id');
 			$table->integer('calendar_id')->unsigned()->index();
 			$table->integer('chart_id')->unsigned()->index();
+			$table->datetime('start');
 			$table->timestamps();
 			$table->softDeletes();
 			
