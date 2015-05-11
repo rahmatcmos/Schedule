@@ -73,6 +73,8 @@ class PersonScheduleController extends Controller {
 					{
 						$schedule					= $value;
 						$schedule['on']				= $period->format('Y-m-d');
+						$schedule['name']			= strtolower($schedule['name']);
+						$schedule['status']			= strtolower($schedule['status']);
 						if(isset($value['id']) && $value['id']!='' && !is_null($value['id']))
 						{
 							$schedule['id']			= $value['id'];
@@ -95,6 +97,8 @@ class PersonScheduleController extends Controller {
 				else
 				{
 					$schedule					= $value;
+					$schedule['name']			= strtolower($schedule['name']);
+					$schedule['status']			= strtolower($schedule['status']);
 					if(isset($value['id']) && $value['id']!='' && !is_null($value['id']))
 					{
 						$schedule['id']			= $value['id'];

@@ -3,6 +3,7 @@
 use DB, Validator;
 use ThunderID\Schedule\Models\PersonSchedule;
 use ThunderID\Log\Models\ProcessLog;
+use ThunderID\Person\Models\Person;
 use \Illuminate\Support\MessageBag as MessageBag;
 
 /* ----------------------------------------------------------------------
@@ -38,6 +39,40 @@ class PersonScheduleObserver
 					$model['errors'] = $errors;
 
 					return false;
+				}
+
+				if($model['attributes']['status']=='cuti')
+				{
+					$person 		= new Person;
+					$data			= $person->id($model['attributes']['person_id'])->CheckWork(true)->CheckWorkleave(true)->withattributes(['works', 'works.workleaves'])->first();
+					if(count($data))
+					{
+						$quota 		= $data->works[0]->workleaves[0]->quota;
+
+						$on 		=  [$data->works[0]->workleaves[0]->apply, $data->works[0]->workleaves[0]->expired];
+						$data		= $person->id($model['attributes']['person_id'])->Workleave(['status' => 'cuti', 'on' => $on, 'chartid' => $data->works[0]->id])->withattributes(['workleaves'])->first();
+						if(count($data))
+						{
+							if(count($data->workleaves) + 1 <= $quota)
+							{
+								return true;
+							}
+							else
+							{
+								$errors 	= new MessageBag;
+								$errors->add('ondate', 'Jatah cuti sudah terpakai.');
+								$model['errors'] = $errors;
+								return false;
+							}
+						}
+						return true;
+					}
+					else
+					{
+						$errors 	= new MessageBag;
+						$errors->add('ondate', 'Karyawan tidak memiliki jatah cuti.');
+						$model['errors'] = $errors;
+					}
 				}
 			}
 

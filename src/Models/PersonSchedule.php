@@ -54,6 +54,7 @@ class PersonSchedule extends BaseModel {
 											'id' 						=> 'ID', 
 											'personid' 					=> 'PersonID', 
 											'name' 						=> 'Name', 
+											'status' 					=> 'Status', 
 											'ondate' 					=> 'OnDate', 
 											'withattributes' 			=> 'WithAttributes'
 										];
@@ -108,6 +109,11 @@ class PersonSchedule extends BaseModel {
 	public function scopeName($query, $variable)
 	{
 		return $query->where('name', 'like', '%'.$variable.'%');
+	}
+
+	public function scopeStatus($query, $variable)
+	{
+		return $query->where('status', 'like', '%'.$variable.'%');
 	}
 
 	public function scopeOnDate($query, $variable)
