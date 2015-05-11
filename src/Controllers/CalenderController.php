@@ -11,7 +11,7 @@ use \ThunderID\Commoquent\Saving;
 use \ThunderID\Commoquent\Deleting;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\DB;
-use App;
+use App, DateTime, DateInterval, DatePeriod;
 
 class CalenderController extends Controller {
 
@@ -62,23 +62,60 @@ class CalenderController extends Controller {
 		{
 			foreach ($attributes['schedules'] as $key => $value) 
 			{
-				$schedule					= $value;
-				if(isset($value['id']) && $value['id']!='' && !is_null($value['id']))
+				if(is_array($value['on']))
 				{
-					$schedule['id']			= $value['id'];
+					$begin 		= new DateTime( $value['on'][0] );
+					$end 		= new DateTime( $value['on'][1] );
+
+					$interval 	= DateInterval::createFromDateString('1 day');
+					$periods 	= new DatePeriod($begin, $interval, $end);
+
+					foreach ( $periods as $period )
+					{
+						$schedule					= $value;
+						$schedule['on']				= $period->format('Y-m-d');
+							print_r($schedule['on']);
+						if(isset($value['id']) && $value['id']!='' && !is_null($value['id']))
+						{
+							$schedule['id']			= $value['id'];
+						}
+						else
+						{
+							$schedule['id']			= null;
+						}
+
+						$saved_schedule 			= $this->dispatch(new Saving(new Schedule, $schedule, $schedule['id'], new Calendar, $is_success->data->id));
+						$is_success_2 				= json_decode($saved_schedule);
+
+						if(!$is_success_2->meta->success)
+						{
+							print_r($saved_schedule);
+							DB::rollback();
+							return $saved_schedule;
+						}
+					}
 				}
 				else
 				{
-					$schedule['id']			= null;
-				}
+					$schedule					= $value;
+					if(isset($value['id']) && $value['id']!='' && !is_null($value['id']))
+					{
+						$schedule['id']			= $value['id'];
+					}
+					else
+					{
+						$schedule['id']			= null;
+					}
 
-				$saved_schedule 			= $this->dispatch(new Saving(new Schedule, $schedule, $schedule['id'], new Calendar, $is_success->data->id));
-				$is_success_2 				= json_decode($saved_schedule);
+					$saved_schedule 			= $this->dispatch(new Saving(new Schedule, $schedule, $schedule['id'], new Calendar, $is_success->data->id));
+					$is_success_2 				= json_decode($saved_schedule);
 
-				if(!$is_success_2->meta->success)
-				{
-					DB::rollback();
-					return $saved_schedule;
+					if(!$is_success_2->meta->success)
+					{
+							print_r($saved_schedule);exit;
+						DB::rollback();
+						return $saved_schedule;
+					}
 				}
 			}
 		}

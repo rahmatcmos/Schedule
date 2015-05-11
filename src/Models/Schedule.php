@@ -53,6 +53,7 @@ class Schedule extends BaseModel {
 											'calendarid' 				=> 'CalendarID', 
 											'name' 						=> 'Name', 
 											'ondate' 					=> 'OnDate', 
+											'notid' 					=> 'NotID', 
 											'chartname' 				=> 'ChartName', 
 											'branchname' 				=> 'BranchName', 
 											'withattributes' 			=> 'WithAttributes'
@@ -129,6 +130,11 @@ class Schedule extends BaseModel {
 			}
 		}
 		return $query->where('on', 'like', date('Y-m', strtotime($variable)).'%');
+	}
+
+	public function scopeNotID($query, $variable)
+	{
+		return $query->where('id', '<>',$variable);
 	}
 
 	public function scopeWithAttributes($query, $variable)

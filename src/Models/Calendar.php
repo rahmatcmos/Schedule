@@ -102,7 +102,7 @@ class Calendar extends BaseModel {
 	/* ---------------------------------------------------------------------------- SCOPE -------------------------------------------------------------------------------*/
 	public function scopeID($query, $variable)
 	{
-		return $query->where('id', $variable);
+		return $query->where('calendars.id', $variable);
 	}
 
 	public function scopeOrganisationID($query, $variable)

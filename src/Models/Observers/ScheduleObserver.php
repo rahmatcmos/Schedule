@@ -2,6 +2,7 @@
 
 use DB, Validator;
 use ThunderID\Schedule\Models\Schedule;
+use ThunderID\Log\Models\ProcessLog;
 use \Illuminate\Support\MessageBag as MessageBag;
 
 /* ----------------------------------------------------------------------
@@ -28,7 +29,7 @@ class ScheduleObserver
 			if(isset($model['attributes']['calendar_id']))
 			{
 				$schedule 			= new Schedule;
-				$data 				= $schedule->ondate([$model['attributes']['on'], $model['attributes']['on']])->calendarid($model['attributes']['calendar_id'])->first();
+				$data 				= $schedule->ondate([$model['attributes']['on'], $model['attributes']['on']])->calendarid($model['attributes']['calendar_id'])->notid($model['attributes']['id'])->first();
 
 				if(count($data))
 				{
@@ -50,8 +51,115 @@ class ScheduleObserver
 		}
 	}
 
+	public function saved($model)
+	{
+		if(date('Y-m-d', strtotime($model['attributes']['on']))<=date('Y-m-d') && isset($model['attributes']['calendar_id']) && $model['attributes']['calendar_id'] != 0)
+		{
+			$processlogs 		= ProcessLog::ondate([date('Y-m-d', strtotime($model['attributes']['on'])), date('Y-m-d', strtotime($model['attributes']['on']))])->hasnoschedule(['on' => date('Y-m-d', strtotime($model['attributes']['on']))])->Calendar(['id' => $model['attributes']['calendar_id'], 'start' => date('Y-m-d', strtotime($model['attributes']['on']))])->get();
+			if($processlogs->count())
+			{
+				foreach ($processlogs as $key => $value) 
+				{
+					$data		= ProcessLog::ID($value->id)->first();
+				
+					//hitung margin start
+					$schedule_start 		= $model['attributes']['start'];
+					list($hours, $minutes, $seconds) = explode(":", $schedule_start);
+
+					$schedule_start			= $hours*3600+$minutes*60+$seconds;
+
+					$start 					= $data->start;
+					list($hours, $minutes, $seconds) = explode(":", $start);
+
+					$start 					= $hours*3600+$minutes*60+$seconds;
+
+					$margin_start			= $schedule_start - $start;
+
+					//hitung margin end
+					$schedule_end 			= $model['attributes']['end'];
+					list($hours, $minutes, $seconds) = explode(":", $schedule_end);
+
+					$schedule_end			= $hours*3600+$minutes*60+$seconds;
+
+					$end 					= $data->end;
+					list($hours, $minutes, $seconds) = explode(":", $end);
+
+					$end 					= $hours*3600+$minutes*60+$seconds;
+
+					$margin_end				= $schedule_end - $end;
+
+					$data->fill(['schedule_start' => $model['attributes']['start'], 'schedule_end' => $model['attributes']['end'], 'margin_end' => $margin_end, 'margin_start' => $margin_start]);
+
+					if(!$data->save())
+					{
+						$model['errors']	= $data->getError();
+						return false;
+					}
+				}
+				return true;
+			}
+			else
+			{
+				$processlogs 	= ProcessLog::ondate([date('Y-m-d', strtotime($model['attributes']['on'])), date('Y-m-d', strtotime($model['attributes']['on']))])->hasnoschedule(['on' => date('Y-m-d', strtotime($model['attributes']['on']))])->WorkCalendar(['id' => $model['attributes']['calendar_id'], 'start' => date('Y-m-d', strtotime($model['attributes']['on']))])->get(['id']);
+				if(count($processlogs))
+				{
+					foreach ($processlogs as $key => $value) 
+					{
+						$data					= ProcessLog::ID($value->id)->first();
+						//hitung margin start
+						$schedule_start 		= $model['attributes']['start'];
+						list($hours, $minutes, $seconds) = explode(":", $schedule_start);
+
+						$schedule_start			= $hours*3600+$minutes*60+$seconds;
+
+						$start 					= $data->start;
+						list($hours, $minutes, $seconds) = explode(":", $start);
+
+						$start 					= $hours*3600+$minutes*60+$seconds;
+
+						$margin_start			= $schedule_start - $start;
+
+						//hitung margin end
+						$schedule_end 			= $model['attributes']['end'];
+						list($hours, $minutes, $seconds) = explode(":", $schedule_end);
+
+						$schedule_end			= $hours*3600+$minutes*60+$seconds;
+
+						$end 					= $data->end;
+						list($hours, $minutes, $seconds) = explode(":", $end);
+
+						$end 					= $hours*3600+$minutes*60+$seconds;
+
+						$margin_end				= $schedule_end - $end;
+
+						$data->fill(['schedule_start' => $model['attributes']['start'], 'schedule_end' => $model['attributes']['end'], 'margin_end' => $margin_end, 'margin_start' => $margin_start]);
+						if(!$data->save())
+						{
+							$model['errors']	= $data->getError();
+
+							return false;
+						}
+					}
+					return true;
+				}
+
+				return true;
+			}
+		}
+	}
+
 	public function updating($model)
 	{
+		if(date('Y-m-d', strtotime($model['attributes']['on']))<date('Y-m-d'))
+		{
+			$errors 		= new MessageBag;
+			$errors->add('ondate', 'Tidak dapat mengubah jadwal yang sudah lewat atau sedang berlangsung. Silahkan tambahkan ke jadwal khusus perorangan.');
+			$model['errors'] = $errors;
+
+			return false;
+		}
+
+		return true;
 		//
 	}
 
