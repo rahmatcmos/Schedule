@@ -57,7 +57,7 @@ class PersonSchedule extends BaseModel {
 											'ondate' 					=> 'OnDate', 
 											'withattributes' 			=> 'WithAttributes'
 										];
-	public $sortable 				= ['created_at'];
+	public $sortable 				= ['created_at', 'on'];
 
 	/* ---------------------------------------------------------------------------- CONSTRUCT ----------------------------------------------------------------------------*/
 	/**
@@ -131,6 +131,11 @@ class PersonSchedule extends BaseModel {
 		return $query->where('on', 'like', date('Y-m', strtotime($variable)).'%');
 	}
 	
+	public function scopeNotID($query, $variable)
+	{
+		return $query->where('id', '<>',$variable);
+	}
+
 	public function scopeWithAttributes($query, $variable)
 	{
 		if(!is_array($variable))
