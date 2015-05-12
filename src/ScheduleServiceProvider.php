@@ -21,7 +21,6 @@ class ScheduleServiceProvider extends ServiceProvider {
 	{
 		\ThunderID\Schedule\Models\Calendar::observe(new \ThunderID\Schedule\Models\Observers\CalendarObserver);
 		\ThunderID\Schedule\Models\Schedule::observe(new \ThunderID\Schedule\Models\Observers\ScheduleObserver);
-		\ThunderID\Schedule\Models\PersonCalendar::observe(new \ThunderID\Schedule\Models\Observers\PersonCalendarObserver);
 		\ThunderID\Schedule\Models\PersonSchedule::observe(new \ThunderID\Schedule\Models\Observers\PersonScheduleObserver);
 		\ThunderID\Schedule\Models\Follow::observe(new \ThunderID\Schedule\Models\Observers\FollowObserver);
 	}
@@ -35,7 +34,6 @@ class ScheduleServiceProvider extends ServiceProvider {
 	{
 		\ThunderID\Schedule\Models\Calendar::observe(new \ThunderID\Schedule\Models\Observers\CalendarObserver);
 		\ThunderID\Schedule\Models\Schedule::observe(new \ThunderID\Schedule\Models\Observers\ScheduleObserver);
-		\ThunderID\Schedule\Models\PersonCalendar::observe(new \ThunderID\Schedule\Models\Observers\PersonCalendarObserver);
 		\ThunderID\Schedule\Models\PersonSchedule::observe(new \ThunderID\Schedule\Models\Observers\PersonScheduleObserver);
 		\ThunderID\Schedule\Models\Follow::observe(new \ThunderID\Schedule\Models\Observers\FollowObserver);
 	}

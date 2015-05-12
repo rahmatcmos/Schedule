@@ -200,4 +200,22 @@ class CalenderController extends Controller {
 
 		return $content;
 	}
+
+	/**
+	 * Display a listing of the resource.
+	 *
+	 * @return Response
+	 */
+	function followIndex($page = 1, $search = null, $sort = null, $all = false)
+	{
+		$per_page 								= 12;
+		if($all)
+		{
+			$per_page 							= 100;
+		}
+
+		$contents 								= $this->dispatch(new Getting(new Follow, $search, $sort ,(int)$page, $per_page));
+		
+		return $contents;
+	}
 }

@@ -42,7 +42,6 @@ class Calendar extends BaseModel {
 	use \ThunderID\Schedule\Models\Relations\BelongsTo\HasOrganisationTrait;
 	use \ThunderID\Schedule\Models\Relations\HasMany\HasSchedulesTrait;
 	use \ThunderID\Schedule\Models\Relations\BelongsToMany\HasChartsTrait;
-	use \ThunderID\Schedule\Models\Relations\BelongsToMany\HasPersonsTrait;
 
 	public 		$timestamps 		= true;
 

@@ -67,7 +67,7 @@ class PersonScheduleObserver
 							else
 							{
 								$errors 	= new MessageBag;
-								$errors->add('ondate', 'Jatah cuti sudah terpakai.');
+								$errors->add('ondate', 'Jatah cuti tidak mencukupi. Sisa jatah cuti : '.$quota-count($data->workleaves).' hari');
 								$model['errors'] = $errors;
 								return false;
 							}

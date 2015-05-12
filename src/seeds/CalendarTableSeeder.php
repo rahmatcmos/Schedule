@@ -31,15 +31,8 @@ class CalendarTableSeeder extends Seeder
 						'name'							=> $faker->country,
 					]);
 
-					if($index==1)
-					{
-						$person 						= 1;
-					}
-					else
-					{
-						$chart 							= $total_branches[$index]->charts[$index2-1]->id;
-						$person 						= rand(2,$total_persons);
-					}
+					$chart 							= $total_branches[$index]->charts[$index2-1]->id;
+					$person 						= rand(2,$total_persons);
 
 					if (!$data->save())
 					{
@@ -47,11 +40,7 @@ class CalendarTableSeeder extends Seeder
 						exit;
 					}
 					
-					$data->Persons()->attach($person);
-					if(isset($chart))
-					{
-						$data->Charts()->attach($chart);
-					}
+					$data->Charts()->attach($chart);
 
 					if (!$data->save())
 					{
