@@ -30,7 +30,14 @@ class PersonScheduleObserver
 			if(isset($model['attributes']['person_id']))
 			{
 				$schedule 			= new PersonSchedule;
-				$data 				= $schedule->ondate([$model['attributes']['on'], $model['attributes']['on']])->personid($model['attributes']['person_id'])->notid($model['attributes']['id'])->first();
+				if(isset($model['attributes']['id']))
+				{
+					$data 			= $schedule->ondate([$model['attributes']['on'], $model['attributes']['on']])->personid($model['attributes']['person_id'])->notid($model['attributes']['id'])->first();
+				}
+				else
+				{
+					$data 			= $schedule->ondate([$model['attributes']['on'], $model['attributes']['on']])->personid($model['attributes']['person_id'])->first();
+				}
 
 				if(count($data))
 				{

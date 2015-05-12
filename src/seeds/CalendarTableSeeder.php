@@ -28,7 +28,7 @@ class CalendarTableSeeder extends Seeder
 					$data 								= new Calendar;
 					$data->fill([
 						'organisation_id'				=> 1,
-						'name'							=> $calendar[rand(0,2)],
+						'name'							=> $faker->country,
 					]);
 
 					if($index==1)

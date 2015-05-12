@@ -29,12 +29,19 @@ class ScheduleObserver
 			if(isset($model['attributes']['calendar_id']))
 			{
 				$schedule 			= new Schedule;
-				$data 				= $schedule->ondate([$model['attributes']['on'], $model['attributes']['on']])->calendarid($model['attributes']['calendar_id'])->notid($model['attributes']['id'])->first();
+				if(isset($model['attributes']['id']))
+				{
+					$data 			= $schedule->ondate([$model['attributes']['on'], $model['attributes']['on']])->calendarid($model['attributes']['calendar_id'])->notid($model['attributes']['id'])->first();
+				}
+				else
+				{
+					$data 			= $schedule->ondate([$model['attributes']['on'], $model['attributes']['on']])->calendarid($model['attributes']['calendar_id'])->first();
+				}
 
 				if(count($data))
 				{
 					$errors 		= new MessageBag;
-					$errors->add('ondate', 'Tidak dapat menyimpan dua jadwal di hari yang sama. Silahkan edit jadwal sebelumnya tambahkan jadwal khusus pada orang yang bersangkutan.');
+					$errors->add('ondate', 'Tidak dapat menyimpan dua jadwal di hari yang sama. Silahkan edit jadwal sebelumnya tambahkan jadwal khusus pada orang yang bersangkutan.'.$data->calendar_id);
 					$model['errors'] = $errors;
 
 					return false;

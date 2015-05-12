@@ -5,6 +5,7 @@ use Illuminate\Database\Eloquent\Model;
 use ThunderID\Schedule\Models\Calendar;
 use ThunderID\Schedule\Models\Schedule;
 use \Faker\Factory, Illuminate\Support\Facades\DB;
+use \DateTime, \DateInterval, \DatePeriod;
 
 class ScheduleTableSeeder extends Seeder
 {
@@ -19,14 +20,20 @@ class ScheduleTableSeeder extends Seeder
 		$end 										= ['16:00:00', '00:00:00', '16:00:00', '12:00:00', '15:00:00', '10:00:00', '00:00:00'];
 		try
 		{
-			foreach(range(1, count($total_cals)) as $index)
+			foreach(range(1, $total_cals) as $index)
 			{
-				foreach (range(1, rand(1,5)) as $value) 
+				$rand 		= rand(0,2);
+				$begin 		= new DateTime( 'first day of january 2015' );
+				$ended 		= new DateTime( 'last day of december 2015'  );
+
+				$interval 	= DateInterval::createFromDateString('1 day');
+				$periods 	= new DatePeriod($begin, $interval, $ended);
+
+				foreach ( $periods as $period )
 				{
-					$rand 							= rand(0,2);
 					$data 							= new Schedule;
 					$data->fill([
-						'on'						=> date('Y-m-d'),
+						'on'						=> $period->format('Y-m-d'),
 						'name'						=> $schedule[$rand],
 						'start'						=> $start[$rand],
 						'end'						=> $end[$rand],
