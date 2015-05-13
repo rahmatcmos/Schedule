@@ -67,10 +67,9 @@ seed (run in windows)
 	}
 
  * 	//other package
- 	2 Relationships belongsToMany 
+ 	1 Relationship belongsToMany 
 	{
-		Chart
-		Person
+		Charts
 	}
 
 /* ----------------------------------------------------------------------
@@ -78,9 +77,16 @@ seed (run in windows)
  * 	name
 
 /* ----------------------------------------------------------------------
+ * Document Observe :
+ * 	delete 							: cannot delete calendar followed by charts or has schedules
+
+/* ----------------------------------------------------------------------
  * Document Searchable :
  * 	id 								: Search by id, parameter => string, id
 	organisationid 					: Search by organisation_id, parameter => string, organisation_id
+	name 							: Search by name, parameter => string, name
+	charttag 						: Where has chart tag likely parameter, parameter => string, chart tag
+	branchname 						: Where has branch name likely parameter, parameter => string, branc hname
 	withattributes					: Search with relationship, parameter => array of relationship (ex : ['chart', 'person'], if relationship is belongsTo then return must be single object, if hasMany or belongsToMany then return must be plural object)
 
 /* ----------------------------------------------------------------------
@@ -116,9 +122,19 @@ seed (run in windows)
  	end
 
 /* ----------------------------------------------------------------------
+ * Document Observe :
+ * 	save							: cannot save 2 dates on same calendar, every updated schedule previous updating process logs
+ 	delete 							: cannot delete schedule
+
+/* ----------------------------------------------------------------------
  * Document Searchable :
  * 	id 								: Search by id, parameter => string, id
 	calendarid 						: Search by calendar_id, parameter => string, calendar_id
+	name 							: Search by name, parameter => string, name
+	ondate 							: Search by on, date, parameter => array for in range date, string for monthly date
+	notid 							: Search not id, parameter => string, id
+	chartname 						: Search by relation charts name, parameter => string, name
+	branchname 						: Search by relation branches name, parameter => string, name
 	withattributes					: Search with relationship, parameter => array of relationship (ex : ['chart', 'person'], if relationship is belongsTo then return must be single object, if hasMany or belongsToMany then return must be plural object)
 
 /* ----------------------------------------------------------------------
@@ -162,46 +178,6 @@ seed (run in windows)
 
 /* ----------------------------------------------------------------------
 
-## Table PersonCalendar
-
-/* ----------------------------------------------------------------------
- * Document Model:
- * 	ID 								: Auto Increment, Integer, PK
- * 	calendar_id 					: Foreign Key From Calendar, Integer, Required
- * 	person_id 						: Foreign Key From Person, Integer, Required
- * 	start 							: Required, Datetime
- *	created_at						: Timestamp
- * 	updated_at						: Timestamp
- * 	deleted_at						: Timestamp
- * 
-/* ----------------------------------------------------------------------
- * Document Relationship :
-* 	//this package
- 	1 Relationship belongsTo 
-	{
-		Calendar
-	}
-
- * 	//other package
- 	1 Relationship belongsTo 
-	{
-		Person
-	}
-
-/* ----------------------------------------------------------------------
- * Document Fillable :
- * 	calendar_id
- 	start
-
-/* ----------------------------------------------------------------------
- * Document Searchable :
- * 	id 								: Search by id, parameter => string, id
-	calendarid 						: Search by calendar_id, parameter => string, calendar_id
-	personid 						: Search by person_id, parameter => string, person_id
-	withattributes					: Search with relationship, parameter => array of relationship (ex : ['chart', 'person'], if relationship is belongsTo then return must be single object, if hasMany or belongsToMany then return must be plural object)
-
-/* ----------------------------------------------------------------------
-
 ## Table PersonSchedule
 
 /* ----------------------------------------------------------------------
@@ -234,9 +210,17 @@ seed (run in windows)
  	end
 
 /* ----------------------------------------------------------------------
+ * Document Observe :
+ * 	save							: cannot save 2 dates on same person schedule, every updated schedule previous updating process logs. If written as workleave, check quota of person
+ 	delete 							: cannot delete previous schedule
+
+/* ----------------------------------------------------------------------
  * Document Searchable :
  * 	id 								: Search by id, parameter => string, id
 	personid 						: Search by person_id, parameter => string, person_id
+	name 							: Search by name, parameter => string, name
+	status 							: Search by status, parameter => string, status
+	ondate 							: Search by on, date, parameter => array for in range date, string for monthly date
 	withattributes					: Search with relationship, parameter => array of relationship (ex : ['chart', 'person'], if relationship is belongsTo then return must be single object, if hasMany or belongsToMany then return must be plural object)
 
 /* ----------------------------------------------------------------------

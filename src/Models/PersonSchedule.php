@@ -32,24 +32,26 @@ class PersonSchedule extends BaseModel {
 	use SoftDeletes;
 	use \ThunderID\Schedule\Models\Relations\BelongsTo\HasPersonTrait;
 
-	public 		$timestamps 		= true;
+	public 		$timestamps 		= 	true;
 
-	protected 	$table 				= 'person_schedules';
-	protected 	$fillable			= [
-										'name' 							,
-										'status' 						,
-										'on' 							,
-										'start' 						,
-										'end' 							,
-									];
+	protected 	$table 				= 	'person_schedules';
 
-	protected 	$rules				= [
-										'name'							=> 'required|max:255',
-										'status'						=> 'required|max:255',
-										'on'							=> 'required|date_format:"Y-m-d"',
-										'start'							=> 'required|date_format:"H:i:s"',
-										'end'							=> 'required|date_format:"H:i:s"',
-									];
+	protected 	$fillable			= 	[
+											'name' 						,
+											'status' 					,
+											'on' 						,
+											'start' 					,
+											'end' 						,
+										];
+
+	protected 	$rules				= 	[
+											'name'						=> 'required|max:255',
+											'status'					=> 'required|max:255',
+											'on'						=> 'required|date_format:"Y-m-d"',
+											'start'						=> 'required|date_format:"H:i:s"',
+											'end'						=> 'required|date_format:"H:i:s"',
+										];
+
 	public $searchable 				= 	[
 											'id' 						=> 'ID', 
 											'personid' 					=> 'PersonID', 
@@ -58,7 +60,8 @@ class PersonSchedule extends BaseModel {
 											'ondate' 					=> 'OnDate', 
 											'withattributes' 			=> 'WithAttributes'
 										];
-	public $sortable 				= ['created_at', 'on'];
+
+	public $sortable 				= 	['created_at', 'on'];
 
 	/* ---------------------------------------------------------------------------- CONSTRUCT ----------------------------------------------------------------------------*/
 	/**

@@ -7,42 +7,38 @@ use \Illuminate\Support\MessageBag as MessageBag;
 
 /* ----------------------------------------------------------------------
  * Event:
- * 	Creating						
  * 	Saving						
+ * 	Saved						
  * 	Updating						
  * 	Deleting						
  * ---------------------------------------------------------------------- */
 
 class ScheduleObserver 
 {
-	public function creating($model)
-	{
-		//
-	}
-
 	public function saving($model)
 	{
-		$validator 				= Validator::make($model['attributes'], $model['rules']);
+		$validator 							= Validator::make($model['attributes'], $model['rules']);
 
 		if ($validator->passes())
 		{
 			if(isset($model['attributes']['calendar_id']))
 			{
-				$schedule 			= new Schedule;
+				$schedule 					= new Schedule;
 				if(isset($model['attributes']['id']))
 				{
-					$data 			= $schedule->ondate([$model['attributes']['on'], $model['attributes']['on']])->calendarid($model['attributes']['calendar_id'])->notid($model['attributes']['id'])->first();
+					$data 					= $schedule->ondate([$model['attributes']['on'], $model['attributes']['on']])->calendarid($model['attributes']['calendar_id'])->notid($model['attributes']['id'])->first();
 				}
 				else
 				{
-					$data 			= $schedule->ondate([$model['attributes']['on'], $model['attributes']['on']])->calendarid($model['attributes']['calendar_id'])->first();
+					$data 					= $schedule->ondate([$model['attributes']['on'], $model['attributes']['on']])->calendarid($model['attributes']['calendar_id'])->first();
 				}
 
 				if(count($data))
 				{
-					$errors 		= new MessageBag;
+					$errors 				= new MessageBag;
 					$errors->add('ondate', 'Tidak dapat menyimpan dua jadwal di hari yang sama. Silahkan edit jadwal sebelumnya tambahkan jadwal khusus pada orang yang bersangkutan.');
-					$model['errors'] = $errors;
+					
+					$model['errors'] 		= $errors;
 
 					return false;
 				}
@@ -52,7 +48,7 @@ class ScheduleObserver
 		}
 		else
 		{
-			$model['errors'] 	= $validator->errors();
+			$model['errors'] 				= $validator->errors();
 
 			return false;
 		}
@@ -62,12 +58,12 @@ class ScheduleObserver
 	{
 		if(date('Y-m-d', strtotime($model['attributes']['on']))<=date('Y-m-d') && isset($model['attributes']['calendar_id']) && $model['attributes']['calendar_id'] != 0)
 		{
-			$processlogs 		= ProcessLog::ondate([date('Y-m-d', strtotime($model['attributes']['on'])), date('Y-m-d', strtotime($model['attributes']['on']))])->hasnoschedule(['on' => date('Y-m-d', strtotime($model['attributes']['on']))])->WorkCalendar(['id' => $model['attributes']['calendar_id'], 'start' => date('Y-m-d', strtotime($model['attributes']['on']))])->get();
+			$processlogs 					= ProcessLog::ondate([date('Y-m-d', strtotime($model['attributes']['on'])), date('Y-m-d', strtotime($model['attributes']['on']))])->hasnoschedule(['on' => date('Y-m-d', strtotime($model['attributes']['on']))])->WorkCalendar(['id' => $model['attributes']['calendar_id'], 'start' => date('Y-m-d', strtotime($model['attributes']['on']))])->get();
 			if($processlogs->count())
 			{
 				foreach ($processlogs as $key => $value) 
 				{
-					$data		= ProcessLog::ID($value->id)->first();
+					$data					= ProcessLog::ID($value->id)->first();
 				
 					//hitung margin start
 					$schedule_start 		= $model['attributes']['start'];
@@ -112,9 +108,10 @@ class ScheduleObserver
 	{
 		if(date('Y-m-d', strtotime($model['attributes']['on']))<date('Y-m-d'))
 		{
-			$errors 		= new MessageBag;
+			$errors 						= new MessageBag;
 			$errors->add('ondate', 'Tidak dapat mengubah jadwal yang sudah lewat atau sedang berlangsung. Silahkan tambahkan ke jadwal khusus perorangan.');
-			$model['errors'] = $errors;
+			
+			$model['errors'] 				= $errors;
 
 			return false;
 		}
@@ -125,7 +122,7 @@ class ScheduleObserver
 
 	public function deleting($model)
 	{
-		$model['errors'] 	= ['Tidak dapat menghapus jadwal.'];
+		$model['errors'] 					= ['Tidak dapat menghapus jadwal.'];
 
 		return false;
 	}

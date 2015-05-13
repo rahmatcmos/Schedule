@@ -8,56 +8,51 @@ use \Illuminate\Support\MessageBag as MessageBag;
 
 /* ----------------------------------------------------------------------
  * Event:
- * 	Creating						
  * 	Saving						
- * 	Updating						
+ * 	Saved						
  * 	Deleting						
  * ---------------------------------------------------------------------- */
 
 class PersonScheduleObserver 
 {
-	public function creating($model)
-	{
-		//
-	}
-
 	public function saving($model)
 	{
-		$validator 				= Validator::make($model['attributes'], $model['rules']);
+		$validator 							= Validator::make($model['attributes'], $model['rules']);
 
 		if ($validator->passes())
 		{
 			if(isset($model['attributes']['person_id']))
 			{
-				$schedule 			= new PersonSchedule;
+				$schedule 					= new PersonSchedule;
 				if(isset($model['attributes']['id']))
 				{
-					$data 			= $schedule->ondate([$model['attributes']['on'], $model['attributes']['on']])->personid($model['attributes']['person_id'])->notid($model['attributes']['id'])->first();
+					$data 					= $schedule->ondate([$model['attributes']['on'], $model['attributes']['on']])->personid($model['attributes']['person_id'])->notid($model['attributes']['id'])->first();
 				}
 				else
 				{
-					$data 			= $schedule->ondate([$model['attributes']['on'], $model['attributes']['on']])->personid($model['attributes']['person_id'])->first();
+					$data 					= $schedule->ondate([$model['attributes']['on'], $model['attributes']['on']])->personid($model['attributes']['person_id'])->first();
 				}
 
 				if(count($data))
 				{
-					$errors 		= new MessageBag;
+					$errors 				= new MessageBag;
 					$errors->add('ondate', 'Tidak dapat menyimpan dua jadwal di hari yang sama. Silahkan edit jadwal sebelumnya.');
-					$model['errors'] = $errors;
+				
+					$model['errors'] 		= $errors;
 
 					return false;
 				}
 
 				if($model['attributes']['status']=='workleave')
 				{
-					$person 		= new Person;
-					$data			= $person->id($model['attributes']['person_id'])->CheckWork(true)->CheckWorkleave(true)->withattributes(['works', 'works.workleaves'])->first();
+					$person 				= new Person;
+					$data					= $person->id($model['attributes']['person_id'])->CheckWork(true)->CheckWorkleave(true)->withattributes(['works', 'works.workleaves'])->first();
 					if(count($data))
 					{
-						$quota 		= $data->works[0]->workleaves[0]->quota;
+						$quota 				= $data->works[0]->workleaves[0]->quota;
 
-						$on 		=  [$data->works[0]->workleaves[0]->apply, $data->works[0]->workleaves[0]->expired];
-						$data		= $person->id($model['attributes']['person_id'])->Workleave(['status' => 'workleave', 'on' => $on, 'chartid' => $data->works[0]->id])->withattributes(['workleaves'])->first();
+						$on 				=  [$data->works[0]->workleaves[0]->apply, $data->works[0]->workleaves[0]->expired];
+						$data				= $person->id($model['attributes']['person_id'])->Workleave(['status' => 'workleave', 'on' => $on, 'chartid' => $data->works[0]->id])->withattributes(['workleaves'])->first();
 						if(count($data))
 						{
 							if(count($data->workleaves) + 1 <= $quota)
@@ -68,6 +63,7 @@ class PersonScheduleObserver
 							{
 								$errors 	= new MessageBag;
 								$errors->add('ondate', 'Jatah cuti tidak mencukupi. Sisa jatah cuti : '.$quota-count($data->workleaves).' hari');
+								
 								$model['errors'] = $errors;
 								return false;
 							}
@@ -76,9 +72,10 @@ class PersonScheduleObserver
 					}
 					else
 					{
-						$errors 	= new MessageBag;
+						$errors 			= new MessageBag;
 						$errors->add('ondate', 'Karyawan tidak memiliki jatah cuti.');
-						$model['errors'] = $errors;
+
+						$model['errors'] 	= $errors;
 					}
 				}
 			}
@@ -87,7 +84,7 @@ class PersonScheduleObserver
 		}
 		else
 		{
-			$model['errors'] 	= $validator->errors();
+			$model['errors'] 				= $validator->errors();
 
 			return false;
 		}
@@ -97,12 +94,12 @@ class PersonScheduleObserver
 	{
 		if(date('Y-m-d', strtotime($model['attributes']['on']))<=date('Y-m-d') && isset($model['attributes']['person_id']) && $model['attributes']['person_id'] != 0)
 		{
-			$processlogs 		= ProcessLog::ondate([date('Y-m-d', strtotime($model['attributes']['on'])), date('Y-m-d', strtotime($model['attributes']['on']))])->personid($model['attributes']['person_id'])->get();
+			$processlogs 					= ProcessLog::ondate([date('Y-m-d', strtotime($model['attributes']['on'])), date('Y-m-d', strtotime($model['attributes']['on']))])->personid($model['attributes']['person_id'])->get();
 			if($processlogs->count())
 			{
 				foreach ($processlogs as $key => $value) 
 				{
-					$data		= ProcessLog::ID($value->id)->first();
+					$data					= ProcessLog::ID($value->id)->first();
 				
 					//hitung margin start
 					$schedule_start 		= $model['attributes']['start'];
@@ -160,7 +157,7 @@ class PersonScheduleObserver
 	{
 		if(date('Y-m-d',strtotime($model['attributes']['on'])) <= date('Y-m-d'))
 		{
-			$model['errors'] 	= ['Tidak dapat menghapus jadwal pribadi seseorang pada waktu yang telah lewat atau hari ini. Silahkan tambahkan jadwal perorangan yang baru.'];
+			$model['errors'] 				= ['Tidak dapat menghapus jadwal pribadi seseorang pada waktu yang telah lewat atau hari ini. Silahkan tambahkan jadwal perorangan yang baru.'];
 
 			return false;
 		}

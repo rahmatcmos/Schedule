@@ -5,7 +5,6 @@ use ThunderID\Schedule\Models\Calendar;
 
 /* ----------------------------------------------------------------------
  * Event:
- * 	Creating						
  * 	Saving						
  * 	Updating						
  * 	Deleting						
@@ -13,11 +12,6 @@ use ThunderID\Schedule\Models\Calendar;
 
 class CalendarObserver 
 {
-	public function creating($model)
-	{
-		//
-	}
-
 	public function saving($model)
 	{
 		$validator 				= Validator::make($model['attributes'], $model['rules']);
@@ -47,12 +41,6 @@ class CalendarObserver
 
 	public function deleting($model)
 	{
-		if($model->persons->count())
-		{
-			$model['errors'] 	= ['Tidak dapat menghapus kalender yang berkaitan dengan karyawan'];
-
-			return false;
-		}
 		if($model->charts->count())
 		{
 			$model['errors'] 	= ['Tidak dapat menghapus kalender yang berkaitan dengan karyawan'];

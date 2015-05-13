@@ -5,19 +5,11 @@ use ThunderID\Schedule\Models\Follow;
 
 /* ----------------------------------------------------------------------
  * Event:
- * 	Creating						
  * 	Saving						
- * 	Updating						
- * 	Deleting						
  * ---------------------------------------------------------------------- */
 
 class FollowObserver 
 {
-	public function creating($model)
-	{
-		//
-	}
-
 	public function saving($model)
 	{
 		$validator 				= Validator::make($model['attributes'], $model['rules']);
@@ -34,15 +26,10 @@ class FollowObserver
 		}
 	}
 
-	public function updating($model)
-	{
-		//
-	}
-
 	public function deleting($model)
 	{
-		$model['errors'] 	= ['Tidak dapat menghapus kalender per posisi.'];
+		// $model['errors'] 	= ['Tidak dapat menghapus kalender per posisi.'];
 
-		return false;
+		// return false;
 	}
 }

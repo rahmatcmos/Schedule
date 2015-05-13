@@ -25,7 +25,7 @@ class CalenderController extends Controller {
 	 *
 	 * @return Response
 	 */
-	function index($page = 1, $search = null, $sort = null, $all = false)
+	public function index($page = 1, $search = null, $sort = null, $all = false)
 	{
 		$per_page 								= 12;
 		if($all)
@@ -64,27 +64,27 @@ class CalenderController extends Controller {
 			{
 				if(is_array($value['on']))
 				{
-					$begin 		= new DateTime( $value['on'][0] );
-					$end 		= new DateTime( ($value['on'][1].' + 1 day') );
+					$begin 						= new DateTime( $value['on'][0] );
+					$end 						= new DateTime( ($value['on'][1].' + 1 day') );
 
-					$interval 	= DateInterval::createFromDateString('1 day');
-					$periods 	= new DatePeriod($begin, $interval, $end);
+					$interval 					= DateInterval::createFromDateString('1 day');
+					$periods 					= new DatePeriod($begin, $interval, $end);
 
 					foreach ( $periods as $period )
 					{
-						$schedule					= $value;
-						$schedule['on']				= $period->format('Y-m-d');
+						$schedule				= $value;
+						$schedule['on']			= $period->format('Y-m-d');
 						if(isset($value['id']) && $value['id']!='' && !is_null($value['id']))
 						{
-							$schedule['id']			= $value['id'];
+							$schedule['id']		= $value['id'];
 						}
 						else
 						{
-							$schedule['id']			= null;
+							$schedule['id']		= null;
 						}
 
-						$saved_schedule 			= $this->dispatch(new Saving(new Schedule, $schedule, $schedule['id'], new Calendar, $is_success->data->id));
-						$is_success_2 				= json_decode($saved_schedule);
+						$saved_schedule 		= $this->dispatch(new Saving(new Schedule, $schedule, $schedule['id'], new Calendar, $is_success->data->id));
+						$is_success_2 			= json_decode($saved_schedule);
 
 						if(!$is_success_2->meta->success)
 						{
@@ -121,18 +121,18 @@ class CalenderController extends Controller {
 		{
 			foreach ($attributes['persons'] as $key => $value) 
 			{
-				$personcalendar				= $value;
+				$personcalendar					= $value;
 				if(isset($value['id']) && $value['id']!='' && !is_null($value['id']))
 				{
-					$personcalendar['id']	= $value['id'];
+					$personcalendar['id']		= $value['id'];
 				}
 				else
 				{
-					$personcalendar['id']	= null;
+					$personcalendar['id']		= null;
 				}
 
-				$saved_person 				= $this->dispatch(new Saving(new PersonCalendar, $personcalendar, $personcalendar['id'], new Calendar, $is_success->data->id));
-				$is_success_2 				= json_decode($saved_person);
+				$saved_person 					= $this->dispatch(new Saving(new PersonCalendar, $personcalendar, $personcalendar['id'], new Calendar, $is_success->data->id));
+				$is_success_2 					= json_decode($saved_person);
 				if(!$is_success_2->meta->success)
 				{
 					DB::rollback();
@@ -145,18 +145,18 @@ class CalenderController extends Controller {
 		{
 			foreach ($attributes['charts'] as $key => $value) 
 			{
-				$follow				= $value;
+				$follow							= $value;
 				if(isset($value['id']) && $value['id']!='' && !is_null($value['id']))
 				{
-					$follow['id']	= $value['id'];
+					$follow['id']				= $value['id'];
 				}
 				else
 				{
-					$follow['id']	= null;
+					$follow['id']				= null;
 				}
 
-				$saved_chart 				= $this->dispatch(new Saving(new Follow, $follow, $follow['id'], new Calendar, $is_success->data->id));
-				$is_success_2 				= json_decode($saved_chart);
+				$saved_chart 					= $this->dispatch(new Saving(new Follow, $follow, $follow['id'], new Calendar, $is_success->data->id));
+				$is_success_2 					= json_decode($saved_chart);
 				if(!$is_success_2->meta->success)
 				{
 					DB::rollback();
@@ -177,7 +177,7 @@ class CalenderController extends Controller {
 	 */
 	public function show($org_id, $id)
 	{
-		$content 						= $this->dispatch(new Getting(new Calendar, ['ID' => $id, 'organisationid' => $org_id, 'withattributes' => ['charts', 'charts.branch']], ['created_at' => 'asc'] ,1, 1));
+		$content 								= $this->dispatch(new Getting(new Calendar, ['ID' => $id, 'organisationid' => $org_id, 'withattributes' => ['charts', 'charts.branch']], ['created_at' => 'asc'] ,1, 1));
 		
 		return $content;
 	}
@@ -190,12 +190,12 @@ class CalenderController extends Controller {
 	 */
 	public function delete($org_id, $id)
 	{
-		$content 						= $this->dispatch(new Getting(new Calendar, ['ID' => $id, 'organisationid' => $org_id], ['created_at' => 'asc'] ,1, 1));
-		$result 						= json_decode($content);
+		$content 								= $this->dispatch(new Getting(new Calendar, ['ID' => $id, 'organisationid' => $org_id], ['created_at' => 'asc'] ,1, 1));
+		$result 								= json_decode($content);
 		
 		if($result->meta->success)
 		{
-			$content 					= $this->dispatch(new Deleting(new Calendar, $id));
+			$content 							= $this->dispatch(new Deleting(new Calendar, $id));
 		}
 
 		return $content;

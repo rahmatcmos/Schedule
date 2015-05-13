@@ -32,32 +32,35 @@ class Schedule extends BaseModel {
 	use SoftDeletes;
 	use \ThunderID\Schedule\Models\Relations\BelongsTo\HasCalendarTrait;
 
-	public 		$timestamps 		= true;
+	public 		$timestamps 		= 	true;
 
-	protected 	$table 				= 'schedules';
-	protected 	$fillable			= [
-										'name' 							,
-										'on' 							,
-										'start' 						,
-										'end' 							,
-									];
+	protected 	$table 				= 	'schedules';
 
-	protected 	$rules				= [
-										'name'							=> 'required|max:255',
-										'on'							=> 'required|date_format:"Y-m-d"',
-										'start'							=> 'required|date_format:"H:i:s"',
-										'end'							=> 'required|date_format:"H:i:s"',
-									];
-	public $searchable 				= 	[
-											'id' 						=> 'ID', 
-											'calendarid' 				=> 'CalendarID', 
-											'name' 						=> 'Name', 
-											'ondate' 					=> 'OnDate', 
-											'notid' 					=> 'NotID', 
-											'chartname' 				=> 'ChartName', 
-											'branchname' 				=> 'BranchName', 
-											'withattributes' 			=> 'WithAttributes'
+	protected 	$fillable			= 	[
+											'name' 							,
+											'on' 							,
+											'start' 						,
+											'end' 							,
 										];
+
+	protected 	$rules				= 	[
+											'name'							=> 'required|max:255',
+											'on'							=> 'required|date_format:"Y-m-d"',
+											'start'							=> 'required|date_format:"H:i:s"',
+											'end'							=> 'required|date_format:"H:i:s"',
+										];
+										
+	public $searchable 				= 	[
+											'id' 							=> 'ID', 
+											'calendarid' 					=> 'CalendarID', 
+											'name' 							=> 'Name', 
+											'ondate' 						=> 'OnDate', 
+											'notid' 						=> 'NotID', 
+											'chartname' 					=> 'ChartName', 
+											'branchname' 					=> 'BranchName', 
+											'withattributes' 				=> 'WithAttributes'
+										];
+
 	public $sortable 				= ['created_at', 'name'];
 
 	/* ---------------------------------------------------------------------------- CONSTRUCT ----------------------------------------------------------------------------*/

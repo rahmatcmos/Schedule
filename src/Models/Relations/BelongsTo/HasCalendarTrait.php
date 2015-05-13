@@ -14,7 +14,7 @@ trait HasCalendarTrait {
 		//
 	}
 
-	/* ------------------------------------------------------------------- RELATIONSHIP IN ORGANISATION PACKAGE -------------------------------------------------------------------*/
+	/* ------------------------------------------------------------------- RELATIONSHIP IN SCHEDULE PACKAGE -------------------------------------------------------------------*/
 	public function Calendar()
 	{
 		return $this->belongsTo('ThunderID\Schedule\Models\Calendar');

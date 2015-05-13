@@ -24,7 +24,7 @@ class PersonScheduleController extends Controller {
 	 *
 	 * @return Response
 	 */
-	function index($page = 1, $search = null, $sort = null, $all = false)
+	public function index($page = 1, $search = null, $sort = null, $all = false)
 	{
 		$per_page 								= 12;
 		if($all)
@@ -63,29 +63,29 @@ class PersonScheduleController extends Controller {
 			{
 				if(is_array($value['on']))
 				{
-					$begin 		= new DateTime( $value['on'][0] );
-					$end 		= new DateTime( ($value['on'][1].' + 1 day') );
+					$begin 						= new DateTime( $value['on'][0] );
+					$end 						= new DateTime( ($value['on'][1].' + 1 day') );
 
-					$interval 	= DateInterval::createFromDateString('1 day');
-					$periods 	= new DatePeriod($begin, $interval, $end);
+					$interval 					= DateInterval::createFromDateString('1 day');
+					$periods 					= new DatePeriod($begin, $interval, $end);
 
 					foreach ( $periods as $period )
 					{
-						$schedule					= $value;
-						$schedule['on']				= $period->format('Y-m-d');
-						$schedule['name']			= strtolower($schedule['name']);
-						$schedule['status']			= strtolower($schedule['status']);
+						$schedule				= $value;
+						$schedule['on']			= $period->format('Y-m-d');
+						$schedule['name']		= strtolower($schedule['name']);
+						$schedule['status']		= strtolower($schedule['status']);
 						if(isset($value['id']) && $value['id']!='' && !is_null($value['id']))
 						{
-							$schedule['id']			= $value['id'];
+							$schedule['id']		= $value['id'];
 						}
 						else
 						{
-							$schedule['id']			= null;
+							$schedule['id']		= null;
 						}
 
-						$saved_schedule 			= $this->dispatch(new Saving(new PersonSchedule, $schedule, $schedule['id'], new Person, $is_success->data->id));
-						$is_success_2 				= json_decode($saved_schedule);
+						$saved_schedule 		= $this->dispatch(new Saving(new PersonSchedule, $schedule, $schedule['id'], new Person, $is_success->data->id));
+						$is_success_2 			= json_decode($saved_schedule);
 
 						if(!$is_success_2->meta->success)
 						{
@@ -133,12 +133,12 @@ class PersonScheduleController extends Controller {
 	 */
 	public function delete($person_id, $id)
 	{
-		$content 						= $this->dispatch(new Getting(new PersonSchedule, ['ID' => $id, 'personid' => $person_id], ['created_at' => 'asc'] ,1, 1));
-		$result 						= json_decode($content);
+		$content 								= $this->dispatch(new Getting(new PersonSchedule, ['ID' => $id, 'personid' => $person_id], ['created_at' => 'asc'] ,1, 1));
+		$result 								= json_decode($content);
 		
 		if($result->meta->success)
 		{
-			$content 					= $this->dispatch(new Deleting(new PersonSchedule, $id));
+			$content 							= $this->dispatch(new Deleting(new PersonSchedule, $id));
 		}
 
 		return $content;

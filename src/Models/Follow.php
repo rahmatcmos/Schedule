@@ -35,23 +35,26 @@ class Follow extends BaseModel {
 	use \ThunderID\Schedule\Models\Relations\BelongsTo\HasCalendarTrait;
 	use \ThunderID\Schedule\Models\Relations\BelongsTo\HasChartTrait;
 
-	public 		$timestamps 		= true;
+	public 		$timestamps 		= 	true;
 
-	protected 	$table 				= 'follows';
-	protected 	$fillable			= [
-										'chart_id' 						,
-									];
+	protected 	$table 				= 	'follows';
 
-	protected 	$rules				= [
-										'chart_id'						=> 'required|exists:charts,id',
-									];
+	protected 	$fillable			= 	[
+											'chart_id' 					,
+										];
+
+	protected 	$rules				= 	[
+											'chart_id'					=> 'required|exists:charts,id',
+										];
+
 	public $searchable 				= 	[
 											'id' 						=> 'ID', 
 											'chartid' 					=> 'ChartID', 
 											'calendarid' 				=> 'CalendarID', 
 											'withattributes' 			=> 'WithAttributes'
 										];
-	public $sortable 				= ['created_at', 'chart_id'];
+
+	public $sortable 				= 	['created_at', 'chart_id'];
 
 	/* ---------------------------------------------------------------------------- CONSTRUCT ----------------------------------------------------------------------------*/
 	/**

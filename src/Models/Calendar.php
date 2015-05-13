@@ -26,10 +26,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 	}
 
  * 	//other package
- 	2 Relationships belongsToMany 
+ 	1 Relationship belongsToMany 
 	{
-		Chart
-		Person
+		Charts
 	}
 
  * ---------------------------------------------------------------------- */
@@ -43,16 +42,18 @@ class Calendar extends BaseModel {
 	use \ThunderID\Schedule\Models\Relations\HasMany\HasSchedulesTrait;
 	use \ThunderID\Schedule\Models\Relations\BelongsToMany\HasChartsTrait;
 
-	public 		$timestamps 		= true;
+	public 		$timestamps 		= 	true;
 
-	protected 	$table 				= 'calendars';
-	protected 	$fillable			= [
-										'name' 							,
-									];
+	protected 	$table 				= 	'calendars';
+	
+	protected 	$fillable			= 	[
+											'name' 						,
+										];
 
-	protected 	$rules				= [
-										'name'							=> 'required|max:255',
-									];
+	protected 	$rules				= 	[
+											'name'						=> 'required|max:255',
+										];
+
 	public $searchable 				= 	[
 											'id' 						=> 'ID', 
 											'organisationid' 			=> 'OrganisationID', 
@@ -61,7 +62,8 @@ class Calendar extends BaseModel {
 											'branchname' 				=> 'BranchName', 
 											'withattributes' 			=> 'WithAttributes'
 										];
-	public $sortable 				= ['created_at', 'name'];
+
+	public $sortable 				= 	['created_at', 'name'];
 
 	/* ---------------------------------------------------------------------------- CONSTRUCT ----------------------------------------------------------------------------*/
 	/**

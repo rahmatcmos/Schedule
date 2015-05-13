@@ -23,7 +23,7 @@ class ScheduleController extends Controller {
 	 *
 	 * @return Response
 	 */
-	function index($page = 1, $search = null, $sort = null, $all = false)
+	public function index($page = 1, $search = null, $sort = null, $all = false)
 	{
 		$per_page 								= 12;
 		if($all)
@@ -34,88 +34,5 @@ class ScheduleController extends Controller {
 		$contents 								= $this->dispatch(new Getting(new Schedule, $search, $sort ,(int)$page, $per_page));
 		
 		return $contents;
-	}
-
-	/**
-	 * Store a newly created resource in storage.
-	 *
-	 * @return Response
-	 */
-	public function store($id = null, $attributes = null)
-	{
-		$id 									= $attributes['schedule']['id'];
-		$org_id 								= $attributes['organisation']['id'];
-
-		DB::beginTransaction();
-		
-		$content 								= $this->dispatch(new Saving(new Schedule, $attributes['schedule'], $id, new Organisation, $org_id));
-
-		$is_success 							= json_decode($content);
-		if(!$is_success->meta->success)
-		{
-			DB::rollback();
-			return $content;
-		}
-
-		if(isset($attributes['templates']))
-		{
-			foreach ($attributes['templates'] as $key => $value) 
-			{
-				$template['field']			= $value['field'];
-				$template['type']			= $value['type'];
-				if(isset($value['id']) && $value['id']!='' && !is_null($value['id']))
-				{
-					$template['id']			= $value['id'];
-				}
-				else
-				{
-					$template['id']			= null;
-				}
-
-				$saved_template 			= $this->dispatch(new Saving(new Template, $template, $template['id'], new Schedule, $is_success->data->id));
-				$is_success_2 				= json_decode($saved_template);
-				if(!$is_success_2->meta->success)
-				{
-					DB::rollback();
-					return $saved_template;
-				}
-			}
-		}
-
-		DB::commit();
-
-		return $content;
-	}
-
-	/**
-	 * Display the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function show($org_id, $id)
-	{
-		$content 						= $this->dispatch(new Getting(new Schedule, ['ID' => $id, 'organisationid' => $org_id], ['created_at' => 'asc'] ,1, 1));
-		
-		return $content;
-	}
-
-	/**
-	 * Remove the specified resource from storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function delete($org_id, $id)
-	{
-		$content 						= $this->dispatch(new Getting(new Schedule, ['ID' => $id, 'organisationid' => $org_id], ['created_at' => 'asc'] ,1, 1));
-		$result 						= json_decode($content);
-		
-		if($result->meta->success)
-		{
-			$content 					= $this->dispatch(new Deleting(new Schedule, $id));
-		}
-
-		return $content;
 	}
 }
