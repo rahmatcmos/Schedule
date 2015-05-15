@@ -47,11 +47,16 @@ class PersonScheduleObserver
 				{
 					$person 				= new Person;
 					$data					= $person->id($model['attributes']['person_id'])->CheckWork(true)->CheckWorkleave(true)->withattributes(['works', 'works.workleaves'])->first();
+					
 					if(count($data))
 					{
-						$quota 				= $data->works[0]->workleaves[0]->quota;
+						$quota 				= 0;
+						foreach($data->works[0]->workleaves as $key => $value)
+						{
+							$quota 			= $quota + $value->quota;
+						}
 
-						$on 				=  [$data->works[0]->workleaves[0]->apply, $data->works[0]->workleaves[0]->expired];
+						$on 				= [$data->works[0]->workleaves[0]->apply, $data->works[0]->workleaves[0]->expired];
 						$data				= $person->id($model['attributes']['person_id'])->Workleave(['status' => 'workleave', 'on' => $on, 'chartid' => $data->works[0]->id])->withattributes(['workleaves'])->first();
 						if(count($data))
 						{

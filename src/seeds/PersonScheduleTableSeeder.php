@@ -12,33 +12,35 @@ class PersonScheduleTableSeeder extends Seeder
 	{
 
 		DB::table('person_schedules')->truncate();
-		$faker 										= Factory::create();
-		$total_persons  							= Person::count();
-		$schedule 									= ['shift pagi', 'shift malam', 'jam normal', 'hari sabtu', 'hari jumat', 'minggu', 'lembur'];
-		$start 										= ['08:00:00', '16:00:00', '08:00:00', '08:00:00', '08:00:00', '08:00:00', '20:00:00'];
-		$end 										= ['16:00:00', '00:00:00', '16:00:00', '12:00:00', '15:00:00', '10:00:00', '00:00:00'];
+		$faker 									= Factory::create();
+		$total_persons  						= Person::count();
+		$status 								= ['switch', 'switch', 'switch', 'workleave', 'workleave', 'switch', 'switch', 'workleave'];
+		$schedule 								= ['shift pagi', 'shift malam', 'cuti tahunan', 'cuti melahirkan', 'hari jumat', 'minggu', 'lembur', 'cuti tahunan'];
+		$start 									= ['08:00:00', '16:00:00', '00:00:00', '00:00:00', '08:00:00', '08:00:00', '20:00:00', '00:00:00'];
+		$end 									= ['16:00:00', '00:00:00', '00:00:00', '00:00:00', '15:00:00', '10:00:00', '00:00:00', '00:00:00'];
 		try
 		{
-			foreach(range(1, 20) as $index)
+			foreach(range(1, 500) as $index)
 			{
-				$rand 							= rand(0,6);
+				$rand 							= rand(0,7);
+				$randay 						= rand(2,60);
 				$data 							= new PersonSchedule;
 				$data->fill([
-					'on'						=> date('Y-m-d'),
+					'on'						=> date('Y-m-d', strtotime('+ '.$randay.' days')),
 					'name'						=> $schedule[$rand],
-					'status'					=> 'Shift',
+					'status'					=> $status[$rand],
 					'start'						=> $start[$rand],
 					'end'						=> $end[$rand],
 				]);
 
-				$person 						= Person::find($index);
+				$person 						= Person::find(rand($randay+1, $total_persons));
 
 				$data->Person()->associate($person);
 
 				if (!$data->save())
 				{
-					print_r($data->getError());
-					exit;
+					// print_r($data->getError());
+					// exit;
 				}
 			} 
 		}
