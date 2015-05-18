@@ -11,6 +11,7 @@ use DB;
  * 	on 		 						: Required, Date
  * 	start 	 						: Required, Time
  * 	end		 						: Required, Time
+ * 	is_affect_salary		 		: Boolean
  *	created_at						: Timestamp
  * 	updated_at						: Timestamp
  * 	deleted_at						: Timestamp
@@ -41,6 +42,7 @@ class Schedule extends BaseModel {
 											'on' 							,
 											'start' 						,
 											'end' 							,
+											'is_affect_salary' 				,
 										];
 
 	protected 	$rules				= 	[
@@ -48,6 +50,7 @@ class Schedule extends BaseModel {
 											'on'							=> 'required|date_format:"Y-m-d"',
 											'start'							=> 'required|date_format:"H:i:s"',
 											'end'							=> 'required|date_format:"H:i:s"',
+											'is_affect_salary'				=> 'bool',
 										];
 										
 	public $searchable 				= 	[

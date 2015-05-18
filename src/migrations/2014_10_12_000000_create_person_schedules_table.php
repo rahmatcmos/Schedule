@@ -21,6 +21,7 @@ class CreatePersonSchedulesTable extends Migration {
 			$table->date('on');
 			$table->time('start');
 			$table->time('end');
+			$table->boolean('is_affect_salary');
 			$table->timestamps();
 			$table->softDeletes();
 			

@@ -102,6 +102,7 @@ seed (run in windows)
  * 	on 		 						: Required, Date
  * 	start 	 						: Required, Time
  * 	end		 						: Required, Time
+ * 	is_affect_salary		 		: Boolean
  *	created_at						: Timestamp
  * 	updated_at						: Timestamp
  * 	deleted_at						: Timestamp
@@ -189,6 +190,7 @@ seed (run in windows)
  * 	on 		 						: Required, Date
  * 	start 	 						: Required, Time
  * 	end		 						: Required, Time
+ * 	is_affect_salary		 		: Boolean
  *	created_at						: Timestamp
  * 	updated_at						: Timestamp
  * 	deleted_at						: Timestamp

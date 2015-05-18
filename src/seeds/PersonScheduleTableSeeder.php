@@ -23,7 +23,7 @@ class PersonScheduleTableSeeder extends Seeder
 			foreach(range(1, 500) as $index)
 			{
 				$rand 							= rand(0,7);
-				$randay 						= rand(2,60);
+				$randay 						= rand(2,40);
 				$data 							= new PersonSchedule;
 				$data->fill([
 					'on'						=> date('Y-m-d', strtotime('+ '.$randay.' days')),

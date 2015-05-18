@@ -24,7 +24,7 @@ class ScheduleTableSeeder extends Seeder
 			{
 				$rand 		= rand(0,2);
 				$begin 		= new DateTime( 'first day of january 2015' );
-				$ended 		= new DateTime( 'last day of december 2015'  );
+				$ended 		= new DateTime( 'last day of june 2015'  );
 
 				$interval 	= DateInterval::createFromDateString('1 day');
 				$periods 	= new DatePeriod($begin, $interval, $ended);

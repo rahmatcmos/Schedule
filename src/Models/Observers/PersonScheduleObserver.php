@@ -46,21 +46,21 @@ class PersonScheduleObserver
 				if($model['attributes']['status']=='workleave')
 				{
 					$person 				= new Person;
-					$data					= $person->id($model['attributes']['person_id'])->CheckWork(true)->CheckWorkleave(true)->withattributes(['works', 'works.workleaves'])->first();
+					$data					= $person->id($model['attributes']['person_id'])->CheckWork(true)->CheckWorkleave([date('Y-m-d',strtotime('first day of january this year')), date('Y-m-d',strtotime('last day of december this year'))])->withattributes(['personworkleaves', 'personworkleaves.workleave'])->first();
 					
 					if(count($data))
 					{
 						$quota 				= 0;
-						foreach($data->works[0]->workleaves as $key => $value)
+						foreach($data->personworkleaves as $key => $value)
 						{
-							$quota 			= $quota + $value->quota;
+							$quota 			= $quota + $value->workleave->quota;
 						}
 
-						$on 				= [$data->works[0]->workleaves[0]->apply, $data->works[0]->workleaves[0]->expired];
-						$data				= $person->id($model['attributes']['person_id'])->Workleave(['status' => 'workleave', 'on' => $on, 'chartid' => $data->works[0]->id])->withattributes(['workleaves'])->first();
+						$on 				= [date('Y-m-d',strtotime('first day of january this year')), date('Y-m-d',strtotime('last day of december this year'))];
+						$data				= $person->id($model['attributes']['person_id'])->takenworkleave(['status' => 'workleave', 'on' => $on])->first();
 						if(count($data))
 						{
-							if(count($data->workleaves) + 1 <= $quota)
+							if(count($data->takenworkleave) + 1 <= $quota)
 							{
 								return true;
 							}
