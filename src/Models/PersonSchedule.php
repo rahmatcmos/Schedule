@@ -52,7 +52,7 @@ class PersonSchedule extends BaseModel {
 											'on'						=> 'required|date_format:"Y-m-d"',
 											'start'						=> 'required|date_format:"H:i:s"',
 											'end'						=> 'required|date_format:"H:i:s"',
-											'is_affect_salary'			=> 'bool',
+											'is_affect_salary'			=> 'boolean',
 										];
 
 	public $searchable 				= 	[
