@@ -143,6 +143,11 @@ class PersonSchedule extends BaseModel {
 		return $query->where('on', 'like', date('Y-m', strtotime($variable)).'%');
 	}
 	
+	public function scopeAffectSalary($query, $variable)
+	{
+		return $query->where('is_affect_salary', $variable);
+	}
+
 	public function scopeNotID($query, $variable)
 	{
 		return $query->where('id', '<>',$variable);
