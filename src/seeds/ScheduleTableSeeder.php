@@ -22,33 +22,33 @@ class ScheduleTableSeeder extends Seeder
 		{
 			foreach(range(1, $total_cals) as $index)
 			{
-				$rand 		= rand(0,2);
-				$begin 		= new DateTime( 'first day of january 2015' );
-				$ended 		= new DateTime( 'last day of june 2015'  );
+				// $rand 		= rand(0,2);
+				// $begin 		= new DateTime( 'first day of january 2015' );
+				// $ended 		= new DateTime( 'last day of june 2015'  );
 
-				$interval 	= DateInterval::createFromDateString('1 day');
-				$periods 	= new DatePeriod($begin, $interval, $ended);
+				// $interval 	= DateInterval::createFromDateString('1 day');
+				// $periods 	= new DatePeriod($begin, $interval, $ended);
 
-				foreach ( $periods as $period )
-				{
-					$data 							= new Schedule;
-					$data->fill([
-						'on'						=> $period->format('Y-m-d'),
-						'name'						=> $schedule[$rand],
-						'start'						=> $start[$rand],
-						'end'						=> $end[$rand],
-					]);
+				// foreach ( $periods as $period )
+				// {
+				// 	$data 							= new Schedule;
+				// 	$data->fill([
+				// 		'on'						=> $period->format('Y-m-d'),
+				// 		'name'						=> $schedule[$rand],
+				// 		'start'						=> $start[$rand],
+				// 		'end'						=> $end[$rand],
+				// 	]);
 
-					$calendar 						= Calendar::find($index);
+				// 	$calendar 						= Calendar::find($index);
 
-					$data->Calendar()->associate($calendar);
+				// 	$data->Calendar()->associate($calendar);
 
-					if (!$data->save())
-					{
-						print_r($data->getError());
-						exit;
-					}
-				}
+				// 	if (!$data->save())
+				// 	{
+				// 		print_r($data->getError());
+				// 		exit;
+				// 	}
+				// }
 			} 
 		}
 		catch (Exception $e) 

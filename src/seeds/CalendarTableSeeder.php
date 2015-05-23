@@ -4,6 +4,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Model;
 use ThunderID\Schedule\Models\Calendar;
 use ThunderID\Person\Models\Person;
+use ThunderID\Organisation\Models\Organisation;
 use ThunderID\Organisation\Models\Branch;
 use ThunderID\Organisation\Models\Chart;
 use \Faker\Factory, Illuminate\Support\Facades\DB;
@@ -16,6 +17,7 @@ class CalendarTableSeeder extends Seeder
 		DB::table('calendars')->truncate();
 		$faker 										= Factory::create();
 		$total_persons  							= Person::count();
+		$total_orgs 		 						= Organisation::count();
 		$total_positions 	 						= Chart::count();
 		$total_branches 	 						= Branch::get();
 		$calendar 									= ['wib', 'wita', 'wit'];
@@ -27,8 +29,11 @@ class CalendarTableSeeder extends Seeder
 				{
 					$data 								= new Calendar;
 					$data->fill([
-						'organisation_id'				=> 1,
+						'organisation_id'				=> rand(1, $total_orgs),
 						'name'							=> $faker->country,
+						'workdays'						=> 'monday, tuesday, wednesday, thursday, friday',
+						'start'							=> date('H:i:s', strtotime('+ '.rand(2,23).' hours'.' + '.rand(2,59).' minutes'.' + '.rand(2,59).' seconds')),
+						'end'							=> date('H:i:s', strtotime('+ '.rand(2,23).' hours'.' + '.rand(2,59).' minutes'.' + '.rand(2,59).' seconds')),
 					]);
 
 					$chart 							= $total_branches[$index]->charts[$index2-1]->id;

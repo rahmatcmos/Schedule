@@ -48,6 +48,9 @@ seed (run in windows)
  * 	ID 								: Auto Increment, Integer, PK
  * 	organisation_id 				: Foreign Key From Organisation, Integer, Required
  * 	name 		 					: Required max 255
+ * 	workdays 		 				: Text
+ * 	start 		 					: Required time
+ * 	end 		 					: Required time
  *	created_at						: Timestamp
  * 	updated_at						: Timestamp
  * 	deleted_at						: Timestamp

@@ -7,6 +7,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * 	ID 								: Auto Increment, Integer, PK
  * 	organisation_id 				: Foreign Key From Organisation, Integer, Required
  * 	name 		 					: Required max 255
+ * 	workdays 		 				: Text
+ * 	start 		 					: Required time
+ * 	end 		 					: Required time
  *	created_at						: Timestamp
  * 	updated_at						: Timestamp
  * 	deleted_at						: Timestamp
@@ -48,10 +51,15 @@ class Calendar extends BaseModel {
 	
 	protected 	$fillable			= 	[
 											'name' 						,
+											'workdays' 					,
+											'start' 					,
+											'end' 						,
 										];
 
 	protected 	$rules				= 	[
 											'name'						=> 'required|max:255',
+											'start'						=> 'required|date_format:"H:i:s"',
+											'end'						=> 'required|date_format:"H:i:s"',
 										];
 
 	public $searchable 				= 	[
