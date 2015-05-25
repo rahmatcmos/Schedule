@@ -68,6 +68,7 @@ class Calendar extends BaseModel {
 											'name' 						=> 'Name', 
 											'charttag' 					=> 'ChartTag', 
 											'branchname' 				=> 'BranchName', 
+											'branchid' 					=> 'BranchID', 
 											'withattributes' 			=> 'WithAttributes'
 										];
 
