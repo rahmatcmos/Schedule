@@ -48,9 +48,6 @@ seed (run in windows)
  * 	ID 								: Auto Increment, Integer, PK
  * 	organisation_id 				: Foreign Key From Organisation, Integer, Required
  * 	name 		 					: Required max 255
- * 	workdays 		 				: Text
- * 	start 		 					: Required time
- * 	end 		 					: Required time
  *	created_at						: Timestamp
  * 	updated_at						: Timestamp
  * 	deleted_at						: Timestamp
@@ -105,7 +102,7 @@ seed (run in windows)
  * 	on 		 						: Required, Date
  * 	start 	 						: Required, Time
  * 	end		 						: Required, Time
- * 	is_affect_salary		 		: Boolean
+ * 	is_affect_workleave		 		: Boolean
  *	created_at						: Timestamp
  * 	updated_at						: Timestamp
  * 	deleted_at						: Timestamp
@@ -193,7 +190,7 @@ seed (run in windows)
  * 	on 		 						: Required, Date
  * 	start 	 						: Required, Time
  * 	end		 						: Required, Time
- * 	is_affect_salary		 		: Boolean
+ * 	is_affect_workleave		 		: Boolean
  *	created_at						: Timestamp
  * 	updated_at						: Timestamp
  * 	deleted_at						: Timestamp

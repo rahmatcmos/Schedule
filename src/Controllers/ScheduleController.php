@@ -23,14 +23,8 @@ class ScheduleController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function index($page = 1, $search = null, $sort = null, $all = false)
+	public function index($page = 1, $search = null, $sort = null, $per_page)
 	{
-		$per_page 								= 12;
-		if($all)
-		{
-			$per_page 							= 100;
-		}
-
 		$contents 								= $this->dispatch(new Getting(new Schedule, $search, $sort ,(int)$page, $per_page));
 		
 		return $contents;
