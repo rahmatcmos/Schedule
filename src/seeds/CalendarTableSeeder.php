@@ -25,7 +25,7 @@ class CalendarTableSeeder extends Seeder
 		{
 			foreach(range(0, count($total_branches)-1) as $index)
 			{
-				foreach(range(1, count($total_branches[$index]->charts)) as $index2)
+				foreach(range(0, count($total_branches[$index]->charts)-1) as $index2)
 				{
 					$data 								= new Calendar;
 					$data->fill([
@@ -36,8 +36,7 @@ class CalendarTableSeeder extends Seeder
 						'end'							=> date('H:i:s', strtotime('+ '.rand(2,23).' hours'.' + '.rand(2,59).' minutes'.' + '.rand(2,59).' seconds')),
 					]);
 
-					$chart 							= $total_branches[$index]->charts[$index2-1]->id;
-					$person 						= rand(2,$total_persons);
+					$chart 								= $total_branches[$index]->charts[$index2]->id;
 
 					if (!$data->save())
 					{
