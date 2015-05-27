@@ -24,7 +24,7 @@ class CreateSchedulesTable extends Migration {
 			$table->timestamps();
 			$table->softDeletes();
 			
-			$table->index(['deleted_at', 'on', 'name']);
+			$table->index(['deleted_at', 'calendar_id', 'on']);
 		});
 	}
 
