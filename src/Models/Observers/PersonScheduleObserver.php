@@ -24,27 +24,27 @@ class PersonScheduleObserver
 		{
 			if(isset($model['attributes']['person_id']))
 			{
-				$schedule 					= new PersonSchedule;
-				if(isset($model['attributes']['id']))
-				{
-					$data 					= $schedule->ondate([$model['attributes']['on'], $model['attributes']['on']])->personid($model['attributes']['person_id'])->notid($model['attributes']['id'])->first();
-				}
-				else
-				{
-					$data 					= $schedule->ondate([$model['attributes']['on'], $model['attributes']['on']])->personid($model['attributes']['person_id'])->first();
-				}
+				// $schedule 					= new PersonSchedule;
+				// if(isset($model['attributes']['id']))
+				// {
+				// 	$data 					= $schedule->ondate([$model['attributes']['on'], $model['attributes']['on']])->personid($model['attributes']['person_id'])->notid($model['attributes']['id'])->first();
+				// }
+				// else
+				// {
+				// 	$data 					= $schedule->ondate([$model['attributes']['on'], $model['attributes']['on']])->personid($model['attributes']['person_id'])->first();
+				// }
 
-				if(count($data))
-				{
-					$errors 				= new MessageBag;
-					$errors->add('ondate', 'Tidak dapat menyimpan dua jadwal di hari yang sama. Silahkan edit jadwal sebelumnya.');
+				// if(count($data))
+				// {
+				// 	$errors 				= new MessageBag;
+				// 	$errors->add('ondate', 'Tidak dapat menyimpan dua jadwal di hari yang sama. Silahkan edit jadwal sebelumnya.');
 				
-					$model['errors'] 		= $errors;
+				// 	$model['errors'] 		= $errors;
 
-					return false;
-				}
+				// 	return false;
+				// }
 
-				if($model['attributes']['is_affect_workleave'])
+				if(strtolower($model['attributes']['status'])=='absence_workleave')
 				{
 					$person 				= new Person;
 					$data					= $person->id($model['attributes']['person_id'])->CheckWork(true)->CheckWorkleave([date('Y-m-d',strtotime('first day of january this year')), date('Y-m-d',strtotime('last day of december this year'))])->withattributes(['personworkleaves', 'personworkleaves.workleave'])->first();

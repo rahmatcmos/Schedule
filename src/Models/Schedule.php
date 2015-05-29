@@ -11,7 +11,7 @@ use DB;
  * 	on 		 						: Required, Date
  * 	start 	 						: Required, Time
  * 	end		 						: Required, Time
- * 	is_affect_workleave		 		: Boolean
+ * 	status		 					: Required, enum presence_indoor, presence_outdoor, absence_workleave, absence_not_workleave
  *	created_at						: Timestamp
  * 	updated_at						: Timestamp
  * 	deleted_at						: Timestamp
@@ -42,7 +42,7 @@ class Schedule extends BaseModel {
 											'on' 							,
 											'start' 						,
 											'end' 							,
-											'is_affect_workleave' 				,
+											'status' 						,
 										];
 
 	protected 	$rules				= 	[
@@ -50,7 +50,7 @@ class Schedule extends BaseModel {
 											'on'							=> 'required|date_format:"Y-m-d"',
 											'start'							=> 'required|date_format:"H:i:s"',
 											'end'							=> 'required|date_format:"H:i:s"',
-											'is_affect_workleave'				=> 'boolean',
+											'status'						=> 'required|in:presence_indoor,presence_outdoor,absence_workleave,absence_not_workleave',
 										];
 										
 	public $searchable 				= 	[

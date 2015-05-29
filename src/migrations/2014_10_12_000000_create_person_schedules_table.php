@@ -17,15 +17,14 @@ class CreatePersonSchedulesTable extends Migration {
 			$table->increments('id');
 			$table->integer('person_id')->unsigned()->index();
 			$table->string('name', 255);
-			$table->string('status', 255);
+			$table->enum('status', ['presence_indoor', 'presence_outdoor', 'absence_workleave', 'absence_not_workleave']);
 			$table->date('on');
 			$table->time('start');
 			$table->time('end');
-			$table->boolean('is_affect_workleave');
 			$table->timestamps();
 			$table->softDeletes();
 			
-			$table->index(['deleted_at', 'person_id', 'on']);
+			$table->index(['deleted_at', 'person_id', 'on', 'status']);
 		});
 	}
 

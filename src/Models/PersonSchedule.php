@@ -7,11 +7,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * 	ID 								: Auto Increment, Integer, PK
  * 	person_id 						: Foreign Key From Person, Integer, Required
  * 	name 		 					: Required max 255
- * 	status 		 					: Required max 255
  * 	on 		 						: Required, Date
  * 	start 	 						: Required, Time
  * 	end		 						: Required, Time
- * 	is_affect_workleave		 		: Boolean
+ * 	status		 					: Required, enum presence_indoor, presence_outdoor, absence_workleave, absence_not_workleave
  *	created_at						: Timestamp
  * 	updated_at						: Timestamp
  * 	deleted_at						: Timestamp
@@ -39,20 +38,18 @@ class PersonSchedule extends BaseModel {
 
 	protected 	$fillable			= 	[
 											'name' 						,
-											'status' 					,
 											'on' 						,
 											'start' 					,
 											'end' 						,
-											'is_affect_workleave' 			,
+											'status' 					,
 										];
 
 	protected 	$rules				= 	[
 											'name'						=> 'required|max:255',
-											'status'					=> 'required|max:255',
 											'on'						=> 'required|date_format:"Y-m-d"',
 											'start'						=> 'required|date_format:"H:i:s"',
 											'end'						=> 'required|date_format:"H:i:s"',
-											'is_affect_workleave'			=> 'boolean',
+											'status'					=> 'required|in:presence_indoor,presence_outdoor,absence_workleave,absence_not_workleave',
 										];
 
 	public $searchable 				= 	[
@@ -119,7 +116,7 @@ class PersonSchedule extends BaseModel {
 
 	public function scopeStatus($query, $variable)
 	{
-		return $query->where('status', 'like', '%'.$variable.'%');
+		return $query->where('status', $variable);
 	}
 
 	public function scopeOnDate($query, $variable)
@@ -145,7 +142,11 @@ class PersonSchedule extends BaseModel {
 	
 	public function scopeAffectSalary($query, $variable)
 	{
-		return $query->where('is_affect_workleave', $variable);
+		if($variable)
+		{
+			return $query->where('status', 'absence_workleave');
+		}
+		return $query->where('status', 'absence_not_workleave');
 	}
 
 	public function scopeNotID($query, $variable)
