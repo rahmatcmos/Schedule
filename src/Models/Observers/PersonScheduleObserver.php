@@ -4,6 +4,7 @@ use DB, Validator;
 use ThunderID\Schedule\Models\PersonSchedule;
 use ThunderID\Log\Models\ProcessLog;
 use ThunderID\Person\Models\Person;
+use ThunderID\Log\Models\Log;
 use \Illuminate\Support\MessageBag as MessageBag;
 
 /* ----------------------------------------------------------------------
@@ -43,7 +44,7 @@ class PersonScheduleObserver
 					return false;
 				}
 
-				if($model['attributes']['status']=='workleave')
+				if($model['attributes']['is_affect_workleave'])
 				{
 					$person 				= new Person;
 					$data					= $person->id($model['attributes']['person_id'])->CheckWork(true)->CheckWorkleave([date('Y-m-d',strtotime('first day of january this year')), date('Y-m-d',strtotime('last day of december this year'))])->withattributes(['personworkleaves', 'personworkleaves.workleave'])->first();
@@ -141,6 +142,43 @@ class PersonScheduleObserver
 					}
 				}
 				return true;
+			}
+		}
+		if(strtolower($model['attributes']['status'])=='dinas' && isset($model['attributes']['person_id']))
+		{
+			$person 						= Person::find($model['attributes']['person_id']);
+			$log 							= new Log;
+			$log->fill([
+						'name' 				=> 'presence',
+						'on' 				=> date('Y-m-d H:i:s', strtotime($model['attributes']['on'].' '.$model['attributes']['start'])),
+						'pc' 				=> 'web',
+			]);
+
+			$log->Person()->associate($person);
+
+			if(!$log->save())
+			{
+
+				$model['errors'] 	= $log->getError();
+
+				return false;
+			}
+
+			$log 							= new Log;
+			$log->fill([
+						'name' 				=> 'presence',
+						'on' 				=> date('Y-m-d H:i:s', strtotime($model['attributes']['on'].' '.$model['attributes']['end'])),
+						'pc' 				=> 'web',
+			]);
+
+			$log->Person()->associate($person);
+
+			if(!$log->save())
+			{
+
+				$model['errors'] 	= $log->getError();
+
+				return false;
 			}
 		}
 	}
