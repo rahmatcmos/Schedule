@@ -204,5 +204,19 @@ class PersonScheduleObserver
 
 			return false;
 		}
+
+		$logs 								= Log::personid($model['attributes']['person_id'])->ondate([date('Y-m-d',strtotime($model['attributes']['on'])), date('Y-m-d',strtotime($model['attributes']['on'].' + 1 Day'))])->get();
+
+		foreach ($logs as $key => $value) 
+		{
+			$log 							= Log::find($value->id);
+
+			if(!$log->delete())
+			{
+				$model['errors'] 			= $log->getError();
+				
+				return false;
+			}
+		}
 	}
 }
