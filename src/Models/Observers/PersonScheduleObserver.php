@@ -144,12 +144,12 @@ class PersonScheduleObserver
 				return true;
 			}
 		}
-		if(strtolower($model['attributes']['status'])=='dinas' && isset($model['attributes']['person_id']))
+		if(strtolower($model['attributes']['status'])=='presence_outdoor' && isset($model['attributes']['person_id']))
 		{
 			$person 						= Person::find($model['attributes']['person_id']);
 			$log 							= new Log;
 			$log->fill([
-						'name' 				=> 'presence',
+						'name' 				=> 'presence_outdoor',
 						'on' 				=> date('Y-m-d H:i:s', strtotime($model['attributes']['on'].' '.$model['attributes']['start'])),
 						'pc' 				=> 'web',
 			]);
@@ -166,7 +166,7 @@ class PersonScheduleObserver
 
 			$log 							= new Log;
 			$log->fill([
-						'name' 				=> 'presence',
+						'name' 				=> 'presence_outdoor',
 						'on' 				=> date('Y-m-d H:i:s', strtotime($model['attributes']['on'].' '.$model['attributes']['end'])),
 						'pc' 				=> 'web',
 			]);
