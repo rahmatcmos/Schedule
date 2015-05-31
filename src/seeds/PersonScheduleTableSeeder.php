@@ -14,7 +14,7 @@ class PersonScheduleTableSeeder extends Seeder
 		DB::table('person_schedules')->truncate();
 		$faker 									= Factory::create();
 		$total_persons  						= Person::count();
-		$status 								= ['switch', 'switch', 'switch', 'workleave', 'workleave', 'switch', 'switch', 'workleave'];
+		$status 								= ['presence_indoor', 'presence_outdoor', 'absence_workleave', 'absence_not_workleave'];
 		$schedule 								= ['shift pagi', 'shift malam', 'cuti tahunan', 'cuti melahirkan', 'hari jumat', 'minggu', 'lembur', 'cuti tahunan'];
 		$start 									= ['08:00:00', '16:00:00', '00:00:00', '00:00:00', '08:00:00', '08:00:00', '20:00:00', '00:00:00'];
 		$end 									= ['16:00:00', '00:00:00', '00:00:00', '00:00:00', '15:00:00', '10:00:00', '00:00:00', '00:00:00'];
@@ -22,7 +22,7 @@ class PersonScheduleTableSeeder extends Seeder
 		{
 			foreach(range(1, 500) as $index)
 			{
-				$rand 							= rand(0,7);
+				$rand 							= rand(0,3);
 				$randay 						= rand(2,40);
 				$data 							= new PersonSchedule;
 				$data->fill([
