@@ -106,9 +106,43 @@ class PersonScheduleObserver
 				foreach ($processlogs as $key => $value) 
 				{
 					$data					= ProcessLog::ID($value->id)->first();
+					$on 					= date('Y-m-d', strtotime($model['attributes']['on']));
+
+					$result 				= json_decode($data->tooltip);
+					$tooltip 				= json_decode(json_encode($result), true);
+
+					$pschedulee 			= Person::ID($model['attributes']['person_id'])->maxendschedule(['on' => [$on, $on]])->first();
+					$pschedules 			= Person::ID($model['attributes']['person_id'])->minstartschedule(['on' => [$on, $on]])->first();
 				
+					if($pschedulee && $pschedules)
+					{
+						$schedule_start		= $pschedules->schedules[0]->start;
+						$schedule_end		= $pschedulee->schedules[0]->end;
+						if($model['attributes']['status']=='presence_outdoor')
+						{
+							if(!in_array($model['attributes']['status'], $tooltip))
+							{
+								$tooltip[] 		= $model['attributes']['status'];
+							}						
+						}
+						else
+						{
+							foreach($pschedules->schedules as $key => $value)
+							{
+								if(!in_array($value->status, $tooltip))
+								{
+									$tooltip[] 		= $value->status;
+								}
+							}
+						}
+					}
+					else
+					{
+						$schedule_end		= $data->schedule_start;
+						$schedule_start 	= $data->schedule_end;
+					}
+
 					//hitung margin start
-					$schedule_start 		= $model['attributes']['start'];
 					list($hours, $minutes, $seconds) = explode(":", $schedule_start);
 
 					$schedule_start			= $hours*3600+$minutes*60+$seconds;
@@ -121,7 +155,6 @@ class PersonScheduleObserver
 					$margin_start			= $schedule_start - $start;
 
 					//hitung margin end
-					$schedule_end 			= $model['attributes']['end'];
 					list($hours, $minutes, $seconds) = explode(":", $schedule_end);
 
 					$schedule_end			= $hours*3600+$minutes*60+$seconds;
@@ -133,15 +166,45 @@ class PersonScheduleObserver
 
 					$margin_end				= $schedule_end - $end;
 
-					$data->fill(['schedule_start' => $model['attributes']['start'], 'schedule_end' => $model['attributes']['end'], 'margin_end' => $margin_end, 'margin_start' => $margin_start]);
-
+					$data->fill(['schedule_start' => gmdate('H:i:s', $schedule_start), 'schedule_end' => gmdate('H:i:s', $schedule_end), 'margin_end' => $margin_end, 'margin_start' => $margin_start, 'tooltip' => json_encode($tooltip)]);
 					if(!$data->save())
 					{
 						$model['errors']	= $data->getError();
 						return false;
 					}
 				}
-				return true;
+
+				// $log 						= new Log;
+				// $log->fill([
+				// 			'name'			=> 'previous schedules',
+				// 			'on'			=> date('Y-m-d H:i:s', strtotime($model['attributes']['on'].' '.$model['attributes']['start'])),
+				// 			'pc'			=> 'web'
+				// 	]);
+
+				// if(!$log->save())
+				// {
+
+				// 	$model['errors'] 	= $log->getError();
+
+				// 	return false;
+				// }
+
+				// $log 						= new Log;
+				// $log->fill([
+				// 			'name'			=> 'previous schedules',
+				// 			'on'			=> date('Y-m-d H:i:s', strtotime($model['attributes']['on'].' '.$model['attributes']['end'])),
+				// 			'pc'			=> 'web'
+				// 	]);
+
+				// if(!$log->save())
+				// {
+
+				// 	$model['errors'] 	= $log->getError();
+
+				// 	return false;
+				// }
+
+				// return true;
 			}
 		}
 		if(strtolower($model['attributes']['status'])=='presence_outdoor' && isset($model['attributes']['person_id']))
