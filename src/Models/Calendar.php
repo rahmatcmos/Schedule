@@ -66,6 +66,7 @@ class Calendar extends BaseModel {
 											'id' 						=> 'ID', 
 											'organisationid' 			=> 'OrganisationID', 
 											'name' 						=> 'Name', 
+											'orname' 					=> 'OrName', 
 											'charttag' 					=> 'ChartTag', 
 											'branchname' 				=> 'BranchName', 
 											'branchid' 					=> 'BranchID', 
@@ -124,6 +125,20 @@ class Calendar extends BaseModel {
 	{
 		return $query->where('name', 'like', '%'.$variable.'%');
 	}
+
+	public function scopeOrName($query, $variable)
+	{
+		if(is_array($variable))
+		{
+			foreach ($variable as $key => $value) 
+			{
+				$query = $query->orwhere('name', 'like', '%'.$value.'%');
+			}
+			return $query;
+		}
+		return $query->where('name', 'like', '%'.$variable.'%');
+	}
+
 
 	public function scopeWithAttributes($query, $variable)
 	{

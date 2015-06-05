@@ -199,4 +199,23 @@ class CalendarController extends Controller {
 		
 		return $contents;
 	}
+
+	/**
+	 * Remove the specified resource from storage.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function followDestroy($chart_id, $id)
+	{
+		$content 								= $this->dispatch(new Getting(new Follow, ['ID' => $id, 'chartid' => $chart_id], ['created_at' => 'asc'] ,1, 1));
+		$result 								= json_decode($content);
+		
+		if($result->meta->success)
+		{
+			$content 							= $this->dispatch(new Deleting(new Follow, $id));
+		}
+
+		return $content;
+	}
 }
